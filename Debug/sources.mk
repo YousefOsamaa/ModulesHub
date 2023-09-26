@@ -29,5 +29,6 @@ HAL/LED \
 HAL/Relay \
 HAL/SW \
 MCAL/DIO \
+MCAL/EXTI \
 MCAL/SREG \
 
