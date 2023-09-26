@@ -1,14 +1,15 @@
-#ifndef MCAL_EXTI_EXTI_CONFIG_H_
-#define MCAL_EXTI_EXTI_CONFIG_H_
+#ifndef EXTI_CONFIG_FILE
+#define EXTI_CONFIG_FILE
 
-#define EXTI_NUM_PINS           3
 
-typedef struct
+
+#define EXTI_INT_COUNT  3
+
+typedef struct 
 {
-    u8 intPin;
-    u8 senseLevel;
-    u8 intMode;
+    u8 INTNumber;
+    u8 INTMode;
+    u8 INTSenseLevel;
 }EXTI_t;
 
-
-#endif /* MCAL_EXTI_EXTI_CONFIG_H_ */
+#endif

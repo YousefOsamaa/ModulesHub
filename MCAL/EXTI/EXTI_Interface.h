@@ -1,18 +1,45 @@
-#ifndef MCAL_EXTI_EXTI_INT_H_
-#define MCAL_EXTI_EXTI_INT_H_
+#ifndef EXTI_INTERFACE_FILE
+#define EXTI_INTERFACE_FILE
 
-ErrorState_t EXTI_enuInit(void);
 
-ErrorState_t EXTI_enuSetSenseLevel(u8 Copy_u8IntPin , u8 Copy_u8SenseLevel);
+#include "../../LIB/STD.h"
+#include "../../LIB/ErrorStates.h"
 
-ErrorState_t EXTI_enuEnableInterrupt(u8 Copy_u8IntPin);
+//INTs numbers
+#define EXTI_INT0  0
+#define EXTI_INT1  1
+#define EXTI_INT2  2
 
-ErrorState_t EXTI_enuDisableInterrupt(u8 Copy_u8IntPin);
+//INT modes
+#define EXTI_INT_MODE      1
+#define EXTI_POLLING_MODE  0
 
-ErrorState_t EXTI_enuSetCallBack(u8 Copy_u8IntPin , void(*Copy_pFunAppFun)(void));
 
-#define EXTI_INT0                   0
-#define EXTI_INT1                   1
-#define EXTI_INT2                   2
+//Sense Levels
+#define EXTI_LOW_LEVEL       0
+#define EXTI_LOGICAL_CHANGE  1
+#define EXTI_FALLING_EDGE    2
+#define EXTI_RISING_EDGE     3
 
-#endif /* MCAL_EXTI_EXTI_INT_H_ */
+//Voltage Levels
+#define EXTI_LOW    0
+#define EXTI_HIGH   1
+
+
+extern ErrorState_t EXTI_enu_Initialization(void);
+
+extern ErrorState_t EXTI_enu_ISC(u8 Copy_u8_INTNumber, u8 Copy_u8_SenseLevel);
+
+extern ErrorState_t EXTI_enu_INTMode(u8 Copy_u8_INTNumber, u8 Copy_u8_Mode);
+
+extern ErrorState_t EXTI_enu_GetPIF (u8 Copy_u8_INTNumber, u8* Copy_pu8_Result);
+
+extern ErrorState_t EXTI_enu_SeTPIF (u8 Copy_u8_INTNumber, u8 Copy_u8_Value);
+
+extern ErrorState_t EXTI_enu_SetCallBack(u8 Copy_u8_INTNumber, void (* Copy_pfun_AppFunction)(void));
+
+
+
+
+
+#endif

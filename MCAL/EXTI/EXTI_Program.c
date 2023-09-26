@@ -1,212 +1,424 @@
 #include "../../LIB/STD.h"
 #include "../../LIB/ErrorStates.h"
-//lower
 
-//my own
-#include "EXTI_Config.h"
 #include "EXTI_Private.h"
-
-// typedef char*   string;
-// typedef void (*pvFUn)(void)      ;
+#include "EXTI_Config.h"
 
 
-extern u8 EXTI_u8EXTIPinNum;
+extern u8 EXTI_u8_INTCount;
+extern EXTI_t EXTI_astr_INTList [];
 
-extern EXTI_t EXTI_astrEXTIConfig [ ];
+static void (*pfun_ISRPointers[EXTI_INT_COUNT])(void) = {NULL, NULL, NULL};
 
-static void (*LOC_pfunISRFun[3])(void) = {NULL, NULL, NULL};
-// static pvFUn ISR[3];
 
-ErrorState_t EXTI_enuInit(void)
+//APIs implementations
+
+extern ErrorState_t EXTI_enu_Initialization(void)
 {
-    ErrorState_t Local_enuErrorState = ES_NOK;
+    u8 Local_u8_ErrorFlag = ES_NOK;
 
-    u8 Local_u8Iter = 0;
-    for (Local_u8Iter = 0 ; Local_u8Iter < EXTI_u8EXTIPinNum ; Local_u8Iter++)
+    u8 Local_u8_Counter = 0;
+    for( Local_u8_Counter = 0; Local_u8_Counter < EXTI_u8_INTCount; Local_u8_Counter++)
     {
-        enuSetIntMode   (EXTI_astrEXTIConfig[Local_u8Iter].intPin , EXTI_astrEXTIConfig[Local_u8Iter].intMode );
-        enuSetSenseLevel(EXTI_astrEXTIConfig[Local_u8Iter].intPin , EXTI_astrEXTIConfig[Local_u8Iter].senseLevel );
+        enu_SetMode(EXTI_astr_INTList[Local_u8_Counter].INTNumber, EXTI_astr_INTList[Local_u8_Counter].INTMode);
+        enu_SetSenseLevel(EXTI_astr_INTList[Local_u8_Counter].INTNumber, EXTI_astr_INTList[Local_u8_Counter].INTSenseLevel);
     }
+    
+    Local_u8_ErrorFlag = ES_OK;
 
-    return Local_enuErrorState;
+    return Local_u8_ErrorFlag;
 }
 
-ErrorState_t EXTI_enuSetSenseLevel(u8 Copy_u8IntPin , u8 Copy_u8SenseLevel)
+extern ErrorState_t EXTI_enu_ISC(u8 Copy_u8_INTNumber, u8 Copy_u8_SenseLevel)
 {
-    ErrorState_t Local_enuErrorState = ES_NOK;
+    u8 Local_u8_ErrorFlag = ES_NOK;
 
-    enuSetSenseLevel(Copy_u8IntPin , Copy_u8SenseLevel );
+    Local_u8_ErrorFlag = enu_SetSenseLevel(Copy_u8_INTNumber, Copy_u8_SenseLevel);
 
-    return Local_enuErrorState;
+    return Local_u8_ErrorFlag;
 }
 
-ErrorState_t EXTI_enuEnableInterrupt(u8 Copy_u8IntPin)
+extern ErrorState_t EXTI_enu_INTMode(u8 Copy_u8_INTNumber, u8 Copy_u8_Mode)
 {
-    ErrorState_t Local_enuErrorState = ES_NOK;
+    u8 Local_u8_ErrorFlag = ES_NOK;
 
-    enuSetIntMode(Copy_u8IntPin, EXTI_INTERRUPT_MODE );
+    Local_u8_ErrorFlag = enu_SetMode(Copy_u8_INTNumber, Copy_u8_Mode);
 
-    return Local_enuErrorState;
+    return Local_u8_ErrorFlag;
 }
 
-ErrorState_t EXTI_enuDisableInterrupt(u8 Copy_u8IntPin)
+extern ErrorState_t EXTI_enu_GetPIF (u8 Copy_u8_INTNumber, u8* Copy_pu8_Result)
 {
-    ErrorState_t Local_enuErrorState = ES_NOK;
+    u8 Local_u8_ErrorFlag = ES_NOK;
 
-    enuSetIntMode(Copy_u8IntPin, EXTI_POLLING_MODE );
-
-    return Local_enuErrorState;
-}
-
-ErrorState_t EXTI_enuSetCallBack(u8 Copy_u8IntPin , void(*Copy_pFunAppFun)(void))
-{
-    ErrorState_t Local_enuErrorState = ES_NOK;
-
-    if (Copy_pFunAppFun != NULL)
+    if (Copy_pu8_Result)
     {
-        LOC_pfunISRFun[Copy_u8IntPin] = Copy_pFunAppFun;
+
+        switch(Copy_u8_INTNumber)
+        {
+            case EXTI_INT0:
+            {
+                *Copy_pu8_Result = 1 & (GIFR >> GIFR_INTF0);
+
+                Local_u8_ErrorFlag = ES_OK;
+                break;
+            }
+            case EXTI_INT1:
+            {
+                *Copy_pu8_Result = 1 & (GIFR >> GIFR_INTF1);
+
+                Local_u8_ErrorFlag = ES_OK;
+
+                break;
+            }
+            case EXTI_INT2:
+            {
+                *Copy_pu8_Result = 1 & (GIFR >> GIFR_INTF2);
+
+                Local_u8_ErrorFlag = ES_OK;
+                break;
+            }
+
+            default:
+            {
+                Local_u8_ErrorFlag = ES_OUT_OF_RANGE;
+
+                break;
+            }
+        }
+
     }
     else
     {
-        Local_enuErrorState = ES_NULL_POINTER;
+        Local_u8_ErrorFlag = ES_NULL_POINTER;
+    }
+    return Local_u8_ErrorFlag;
+}
+
+extern ErrorState_t EXTI_enu_SeTPIF (u8 Copy_u8_INTNumber, u8 Copy_u8_Value)
+{
+    u8 Local_u8_ErrorFlag = ES_NOK;
+
+    Local_u8_ErrorFlag = enu_SetFlagValue(Copy_u8_INTNumber, Copy_u8_Value);
+
+    return Local_u8_ErrorFlag;
+}
+
+extern ErrorState_t EXTI_enu_SetCallBack(u8 Copy_u8_INTNumber, void (* Copy_pfun_AppFunction)(void))
+{
+    u8 Local_u8_ErrorFlag = ES_NOK;
+
+    if(Copy_pfun_AppFunction)
+    {
+        pfun_ISRPointers[Copy_u8_INTNumber] = Copy_pfun_AppFunction;
     }
 
-    return Local_enuErrorState;
+    return Local_u8_ErrorFlag;
 }
 
 
+//ISR 
 void __vector_1 (void)__attribute__((signal));
 void __vector_2 (void)__attribute__((signal));
 void __vector_3 (void)__attribute__((signal));
-//INT0
+
 void __vector_1 (void)
 {
-    if(LOC_pfunISRFun[EXTI_INT0] != NULL)
+    if(pfun_ISRPointers[EXTI_INT0])
     {
-        LOC_pfunISRFun[EXTI_INT0] ();
+        pfun_ISRPointers[EXTI_INT0] ();
     }
 }
 //INT1
 void __vector_2 (void)
 {
-    if(LOC_pfunISRFun[EXTI_INT1] != NULL)
+    if(pfun_ISRPointers[EXTI_INT1])
     {
-        LOC_pfunISRFun[EXTI_INT1] ();
+        pfun_ISRPointers[EXTI_INT1] ();
     }
 }
 //INT2
 void __vector_3 (void)
 {
-    if(LOC_pfunISRFun[EXTI_INT2] != NULL)
+    if(pfun_ISRPointers[EXTI_INT2])
     {
-        LOC_pfunISRFun[EXTI_INT2] ();
+        pfun_ISRPointers[EXTI_INT2] ();
     }
-
+    
 }
 
 
-static ErrorState_t enuSetIntMode(u8 Copy_u8IntPin, u8 Copy_u8IntMode)
+//Local functions' implementations
+
+static ErrorState_t enu_SetMode(u8 Copy_u8_INTNumber, u8 Copy_u8_Mode)
 {
-    switch (Copy_u8IntPin)
+    u8 Local_u8_ErrorFlag = ES_NOK;
+
+    switch (Copy_u8_INTNumber)
     {
         case EXTI_INT0:
-            if (Copy_u8IntMode == EXTI_INTERRUPT_MODE)
+        {   
+            if (Copy_u8_Mode == EXTI_INT_MODE)
             {
-                GICR |= (1<<6);
+                GICR |= ( 1 << GICR_INT0);
+                
+                Local_u8_ErrorFlag = ES_OK;
+            }
+            else if (Copy_u8_Mode == EXTI_POLLING_MODE)
+            {
+                GICR &= ~( 1 << GICR_INT0);
+
+                Local_u8_ErrorFlag = ES_OK;
             }
             else
             {
-                GICR &=~ (1<<6);
+                Local_u8_ErrorFlag = ES_OUT_OF_RANGE;
             }
+         
             break;
+        }
 
         case EXTI_INT1:
-            if (Copy_u8IntMode == EXTI_INTERRUPT_MODE)
+        {
+            if (Copy_u8_Mode == EXTI_INT_MODE)
             {
-                GICR |= (1<<7);
-            }
-            else
-            {
-                GICR &=~ (1<<7);
-            }
-            break;
+                GICR |= ( 1 << GICR_INT1);
 
-        case EXTI_INT2:
-            if (Copy_u8IntMode == EXTI_INTERRUPT_MODE)
+                Local_u8_ErrorFlag = ES_OK;
+            }
+            else if (Copy_u8_Mode == EXTI_POLLING_MODE)
             {
-                GICR |= (1<<5);
+                GICR &= ~( 1 << GICR_INT1);
+
+                Local_u8_ErrorFlag = ES_OK;
             }
             else
             {
-                GICR &=~ (1<<5);
+                Local_u8_ErrorFlag = ES_OUT_OF_RANGE;
             }
+            
             break;
+        }
+        case EXTI_INT2:
+        {
+            if (Copy_u8_Mode == EXTI_INT_MODE)
+            {
+                GICR |= ( 1 << GICR_INT2);
+                
+                Local_u8_ErrorFlag = ES_OK;
+            }
+            else if (Copy_u8_Mode == EXTI_POLLING_MODE)
+            {
+                GICR &= ~( 1 << GICR_INT2);
+
+                Local_u8_ErrorFlag = ES_OK;
+            }
+            else
+            {
+                Local_u8_ErrorFlag = ES_OUT_OF_RANGE;
+            }
+
+            break;
+        }
+    
+        default:
+        Local_u8_ErrorFlag = ES_OUT_OF_RANGE;
+        break;
     }
+
+
+    return Local_u8_ErrorFlag;    
 }
-static ErrorState_t enuSetSenseLevel(u8 Copy_u8IntPin, u8 Copy_u8SenseLevel)
+
+static ErrorState_t enu_SetSenseLevel(u8 Copy_u8_INTNumber, u8 Copy_u8_SenseLevel)
 {
-    switch (Copy_u8IntPin)
+    u8 Local_u8_ErrorFlag = ES_NOK;
+
+    switch (Copy_u8_INTNumber)
+    {
+    case EXTI_INT0:
+    {   
+        //Clearing both bits
+        MCUCR &= ~( 3 << MCUCR_ISC00);
+
+        if(Copy_u8_SenseLevel == EXTI_LOW_LEVEL)
+        {
+            //Bits already contain 00
+            Local_u8_ErrorFlag = ES_OK;
+        }
+        else if (Copy_u8_SenseLevel == EXTI_LOGICAL_CHANGE)
+        {
+            //Bits contain 01
+            MCUCR |= ( 1 << MCUCR_ISC00);
+
+            Local_u8_ErrorFlag = ES_OK;
+        }
+        else if (Copy_u8_SenseLevel == EXTI_FALLING_EDGE)
+        {
+            //Bits contain 01
+            MCUCR |= ( 1 << MCUCR_ISC01);
+
+        }
+        else if (Copy_u8_SenseLevel == EXTI_RISING_EDGE)
+        {
+            //Bits contain 11
+            MCUCR |= ( 3 << MCUCR_ISC00);
+
+            Local_u8_ErrorFlag = ES_OK;
+        }
+        else
+        {
+            Local_u8_ErrorFlag = ES_OUT_OF_RANGE;
+        }
+
+        break;
+    }
+
+    case EXTI_INT1:
+    {
+        //Clearing both bits
+        MCUCR &= ~( 3 << MCUCR_ISC10);
+
+        if(Copy_u8_SenseLevel == EXTI_LOW_LEVEL)
+        {
+            //Bits already contain 00
+            Local_u8_ErrorFlag = ES_OK;
+        }
+        else if (Copy_u8_SenseLevel == EXTI_LOGICAL_CHANGE)
+        {
+            //Bits contain 01
+            MCUCR |= ( 1 << MCUCR_ISC10);
+
+            Local_u8_ErrorFlag = ES_OK;
+        }
+        else if (Copy_u8_SenseLevel == EXTI_FALLING_EDGE)
+        {
+            //Bits contain 01
+            MCUCR |= ( 1 << MCUCR_ISC11);
+
+        }
+        else if (Copy_u8_SenseLevel == EXTI_RISING_EDGE)
+        {
+            //Bits contain 11
+            MCUCR |= ( 3 << MCUCR_ISC10);
+
+            Local_u8_ErrorFlag = ES_OK;
+        }
+        else
+        {
+            Local_u8_ErrorFlag = ES_OUT_OF_RANGE;
+        }
+
+        break;
+    }
+
+    case EXTI_INT2:
+    {
+        if(Copy_u8_SenseLevel == EXTI_FALLING_EDGE)
+        {
+            //Bit contains 0
+            MCUCSR &= ~(1 << MCUCSR_ISC2);
+
+            Local_u8_ErrorFlag = ES_OK;
+        }
+        else if ( Copy_u8_SenseLevel == EXTI_RISING_EDGE)
+        {
+            //Bit contains 1
+            MCUCSR |= (1 << MCUCSR_ISC2);
+
+            Local_u8_ErrorFlag = ES_OK;
+        }
+
+        break;
+    }
+    
+    default:
+    {
+        Local_u8_ErrorFlag = ES_OUT_OF_RANGE;
+        break;
+    }
+    }
+
+
+    return Local_u8_ErrorFlag;
+}
+
+static ErrorState_t enu_SetFlagValue(u8 Copy_u8_INTNumber, u8 Copy_u8_Value)
+{
+    u8 Local_u8_ErrorFlag = ES_NOK;
+
+    switch (Copy_u8_INTNumber)
     {
         case EXTI_INT0:
-            if (Copy_u8SenseLevel == EXTI_LOW_LEVEL)
+        {   
+            if (Copy_u8_Value == EXTI_HIGH)
             {
-                MCUCR &= ~(3<<0);
+                GIFR |= ( 1 << GIFR_INTF0);
+                
+                Local_u8_ErrorFlag = ES_OK;
             }
-            else if (Copy_u8SenseLevel == EXTI_ANY_CHANGE)
+            else if (Copy_u8_Value == EXTI_LOW)
             {
-                MCUCR &= ~(3<<0);
-                MCUCR |=  (1<<0);
-            }
-            else if (Copy_u8SenseLevel == EXTI_FALLING)
-            {
-                MCUCR &= ~(3<<0);
-                MCUCR |=  (1<<1);
-            }
-            else if (Copy_u8SenseLevel == EXTI_RISING)
-            {
-                MCUCR |=  (3<<0);
+                GIFR &= ~( 1 << GIFR_INTF0);
+
+                Local_u8_ErrorFlag = ES_OK;
             }
             else
             {
+                Local_u8_ErrorFlag = ES_OUT_OF_RANGE;
             }
+         
             break;
+        }
 
         case EXTI_INT1:
-            if (Copy_u8SenseLevel == EXTI_LOW_LEVEL)
+        {
+            if (Copy_u8_Value == EXTI_HIGH)
             {
-                MCUCR &= ~(3<<2);
-            }
-            else if (Copy_u8SenseLevel == EXTI_ANY_CHANGE)
-            {
-                MCUCR &= ~(3<<2);
-                MCUCR |=  (1<<2);
-            }
-            else if (Copy_u8SenseLevel == EXTI_FALLING)
-            {
-                MCUCR &= ~(3<<2);
-                MCUCR |=  (1<<3);
-            }
-            else if (Copy_u8SenseLevel == EXTI_RISING)
-            {
-                MCUCR |=  (3<<2);
-            }
-            else
-            {
-            }
-            break;
+                GIFR |= ( 1 << GIFR_INTF1);
 
-        case EXTI_INT2:
-            if (Copy_u8SenseLevel == EXTI_FALLING)
-            {
-                MCUCSR &= ~(1<<6);
+                Local_u8_ErrorFlag = ES_OK;
             }
-            else if (Copy_u8SenseLevel == EXTI_RISING)
+            else if (Copy_u8_Value == EXTI_LOW)
             {
-                MCUCSR |=  (1<<6);
+                GIFR &= ~( 1 << GIFR_INTF1);
+
+                Local_u8_ErrorFlag = ES_OK;
             }
             else
             {
+                Local_u8_ErrorFlag = ES_OUT_OF_RANGE;
             }
+            
             break;
+        }
+        case EXTI_INT2:
+        {
+            if (Copy_u8_Value == EXTI_HIGH)
+            {
+                GIFR |= ( 1 << GIFR_INTF2);
+                
+                Local_u8_ErrorFlag = ES_OK;
+            }
+            else if (Copy_u8_Value == EXTI_LOW)
+            {
+                GIFR &= ~( 1 << GIFR_INTF2);
+
+                Local_u8_ErrorFlag = ES_OK;
+            }
+            else
+            {
+                Local_u8_ErrorFlag = ES_OUT_OF_RANGE;
+            }
+
+            break;
+        }
+    
+        default:
+        Local_u8_ErrorFlag = ES_OUT_OF_RANGE;
+        break;
     }
+
+
+    return Local_u8_ErrorFlag;     
 }

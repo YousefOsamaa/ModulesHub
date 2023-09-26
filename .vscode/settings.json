@@ -1,6 +1,9 @@
 {
     "files.associations": {
         "lcd_private.h": "c",
-        "lcd_config.h": "c"
+        "lcd_config.h": "c",
+        "exti_config.h": "c",
+        "exti_private.h": "c",
+        "errorstates.h": "c"
     }
 }
