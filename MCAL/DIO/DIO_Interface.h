@@ -36,7 +36,7 @@
 
 
 //Functions' Prototypes
-extern ErrorState_t DIO_enu_Initialization(void);
+//extern ErrorState_t DIO_enu_Initialization(void);
 
 extern ErrorState_t DIO_enu_SetPinDiretion(u8 Copy_u8_PinGroup, u8 Copy_u8_PinNumber, u8 Copy_u8_PinDirection);
 

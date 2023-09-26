@@ -25,6 +25,7 @@ HAL/Buzzer \
 HAL/Hexadecoder \
 HAL/KEYPAD \
 HAL/LCD \
+HAL/LED \
 HAL/Relay \
 HAL/SW \
 MCAL/DIO \

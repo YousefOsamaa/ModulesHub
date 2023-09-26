@@ -1,0 +1,6 @@
+{
+    "files.associations": {
+        "lcd_private.h": "c",
+        "lcd_config.h": "c"
+    }
+}

@@ -1,8 +1,8 @@
 #ifndef LCD_INTERFACE_FILE
 #define LCD_INTERFACE_FILE
 
-#include "../../General/STD.h"
-#include "../../General/ErrorStates.h"
+#include "../../LIB/STD.h"
+#include "../../LIB/ErrorStates.h"
 
 //Custom Pattern Numbers
 #define LCD_CUSTOM_PATTERN_0       0

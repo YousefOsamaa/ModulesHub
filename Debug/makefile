@@ -12,6 +12,7 @@ RM := rm -rf
 -include MCAL/DIO/subdir.mk
 -include HAL/SW/subdir.mk
 -include HAL/Relay/subdir.mk
+-include HAL/LED/subdir.mk
 -include HAL/LCD/subdir.mk
 -include HAL/KEYPAD/subdir.mk
 -include HAL/Hexadecoder/subdir.mk
@@ -55,7 +56,7 @@ all: ModuleHub.elf secondary-outputs
 ModuleHub.elf: $(OBJS) $(USER_OBJS)
 	@echo 'Building target: $@'
 	@echo 'Invoking: AVR C Linker'
-	avr-gcc -Wl,-Map,ModuleHub.map -mmcu=atmega329pa -o "ModuleHub.elf" $(OBJS) $(USER_OBJS) $(LIBS)
+	avr-gcc -Wl,-Map,ModuleHub.map -mmcu=atmega32 -o "ModuleHub.elf" $(OBJS) $(USER_OBJS) $(LIBS)
 	@echo 'Finished building target: $@'
 	@echo ' '
 
@@ -73,7 +74,7 @@ ModuleHub.hex: ModuleHub.elf
 
 sizedummy: ModuleHub.elf
 	@echo 'Invoking: Print Size'
-	-avr-size --format=avr --mcu=atmega329pa ModuleHub.elf
+	-avr-size --format=avr --mcu=atmega32 ModuleHub.elf
 	@echo 'Finished building: $@'
 	@echo ' '
 

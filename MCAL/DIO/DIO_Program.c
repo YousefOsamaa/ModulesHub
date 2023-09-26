@@ -1,6 +1,7 @@
 //General files
 #include "../../LIB/STD.h"
 #include "../../LIB/ErrorStates.h"
+
 //Lower layers' files
 
 
@@ -10,7 +11,15 @@
 
 
 //Functions' implementation
-extern ErrorState_t DIO_enu_Initialization(void);
+extern ErrorState_t DIO_enu_Initialization(void)
+{
+    u8 Local_u8_ErrorFlag = ES_NOK;
+
+
+    Local_u8_ErrorFlag = ES_OK;
+
+    return Local_u8_ErrorFlag;
+}
 
 extern ErrorState_t DIO_enu_SetPinDiretion(u8 Copy_u8_PinGroup, u8 Copy_u8_PinNumber, u8 Copy_u8_PinDirection)
 {
@@ -182,7 +191,7 @@ extern ErrorState_t DIO_enu_TogglePinValue(u8 Copy_u8_PinGroup, u8 Copy_u8_PinNu
             case DIO_PIN_GROUP_A:
             DIO_PORTA ^= ( 1 << Copy_u8_PinNumber);
             break;
-            
+
             case DIO_PIN_GROUP_B:
             DIO_PORTB ^= ( 1 << Copy_u8_PinNumber);
             break;
