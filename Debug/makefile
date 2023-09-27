@@ -11,6 +11,7 @@ RM := rm -rf
 -include MCAL/SREG/subdir.mk
 -include MCAL/EXTI/subdir.mk
 -include MCAL/DIO/subdir.mk
+-include MCAL/ADC/subdir.mk
 -include HAL/SW/subdir.mk
 -include HAL/Relay/subdir.mk
 -include HAL/LED/subdir.mk

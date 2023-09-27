@@ -65,7 +65,7 @@ extern ErrorState_t LCD_enu_Initialization(void)
 
     //Display ON/OFF control
     DIO_enu_SetPinValue(LCD_RS_GROUP, LCD_RS_PIN, DIO_LOW);
-    enu_PassByteAndLatch(0x0F);
+    enu_PassByteAndLatch(0x0c);
 
     //Display clear
     DIO_enu_SetPinValue(LCD_RS_GROUP, LCD_RS_PIN, DIO_LOW);
@@ -303,6 +303,8 @@ extern ErrorState_t LCD_enu_WriteIntegerNum(s32 Copy_s32_Num,u8 Copy_u8_Row,u8 C
 
         //Choosing IR
         DIO_enu_SetPinValue(LCD_RS_GROUP, LCD_RS_PIN,DIO_LOW);
+        //Placing Cursor
+        enu_PassByteAndLatch(LCD_FIRST_LINE_BASE_ADDRESS + (Copy_u8_Column - 1) + (LCD_SECOND_LINE_BASE_ADDRESS - LCD_FIRST_LINE_BASE_ADDRESS)*(Copy_u8_Row - 1) + 16*(Copy_u8_Page - 1));
         
         //Choosing DR
         DIO_enu_SetPinValue(LCD_RS_GROUP, LCD_RS_PIN,DIO_HIGH);
@@ -312,6 +314,7 @@ extern ErrorState_t LCD_enu_WriteIntegerNum(s32 Copy_s32_Num,u8 Copy_u8_Row,u8 C
             enu_PassByteAndLatch('-');
         }
         //Printing one digit at a time
+
         while (Local_u32_TempVariable)
         {
             enu_PassByteAndLatch((Local_u32_TempVariable % 10) + 48);
