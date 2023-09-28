@@ -1,70 +1,62 @@
-#include "../LIB/STD.h"
-#include "../MCAL/ADC/ADC_Interface.h"
-#include "../HAL/LCD/LCD_Interface.h"
-#include "../MCAL/DIO/DIO_Interface.h"
+#include "../MCAL/Timer/Timer_Interface.h"
 #include "../MCAL/SREG/SREG_Interface.h"
+#include "../MCAL/DIO/DIO_Interface.h"
+#include "../MCAL/EXTI/EXTI_Interface.h"
+#include "../HAL/LCD/LCD_Interface.h"
 #include <util/delay.h>
-	
-struct x
+
+#define LED_LIGHT_STATE  1
+#define LED_DIM_STATE    0
+
+typedef struct 
 {
-	u16 Data;
+	u8 Counter;
 	u8 Flag;
-};
+}Counter_t;
 
-
-void adc (void* Copy_pvid_Parameters)
+void LOC_vid_IncrementCounter(void* Copy_pvid_ParametersPointer)
 {
-	ADC_enu_ReadData(&((struct x*)Copy_pvid_Parameters)->Data);
 
-	((struct x*)Copy_pvid_Parameters)->Flag  = True;
 }
-int main(void)
+
+int main (void)
 {
-	struct x Param ={0, False};
+	
+	Counter_t Local_str_Counter = {0, False};
 
-	DIO_enu_SetPinDiretion(DIO_PIN_GROUP_A, DIO_PIN_0, DIO_PIN_READ);
-	DIO_enu_SetPinState(DIO_PIN_GROUP_A, DIO_PIN_0, DIO_FLOAT);
+	//Configuring OC0 pin
+	DIO_enu_SetPinDiretion(DIO_PIN_GROUP_B, DIO_PIN_3, DIO_PIN_WRITE);
+	DIO_enu_SetPinValue(DIO_PIN_GROUP_B, DIO_PIN_3, DIO_LOW);
+	
+	//EXTI intialization
+	EXTI_enu_Initialization();
+	
+	//initializing ETI call back function for INT0
+	//EXTI_enu_SetCallBack(EXTI_INT0,);;
 
-	DIO_enu_SetPinDiretion(DIO_PIN_GROUP_C, DIO_PIN_0, DIO_PIN_WRITE);
-	DIO_enu_SetPinValue(DIO_PIN_GROUP_C, DIO_PIN_0, DIO_LOW);
+	//Placing '10' value in OCR0 register
+	Timer_enu_SetOCRxValue(TIMER_0,10);
 
+	//Initializing Timer
+	Timer_enu_Initialization();
+	
+	//Initializing call back function
+	Timer_enu_SetCallBack(TIMER_0,TIMER_CTC,LOC_vid_IncrementCounter, &Local_str_Counter);
+	
+	//LCD initialization
 	LCD_enu_Initialization();
 
-	ADC_enu_Initialization();
-
-	ADC_enu_SetCallBack(adc, &Param);
-
+	
+	//SEtting GIE
 	SREG_vid_EnableBitI();
 
-	LCD_enu_GoToPosition(LCD_ROW_1,LCD_COLUMN_1,LCD_PAGE_1);
-	LCD_enu_SendString("Volt = ");
 
-	LCD_enu_GoToPosition(LCD_ROW_1, LCD_COLUMN_12, LCD_PAGE_1);
-	LCD_enu_SendString(" mV");
-
-	ADC_enu_StartConversion();
-
-	while(1)
+	while (1)
 	{
-		u16 Local_u8_Data;
-
-
-		if (Param.Flag)
-		{
-			Param.Flag = False;
-			LCD_enu_GoToPosition(LCD_ROW_1,LCD_COLUMN_8, LCD_PAGE_1);
-			LCD_enu_SendString("    ");
-
-			Param.Data = Param.Data * ((f32)5000/1024);
-
-			LCD_enu_WriteIntegerNum(Param.Data, LCD_ROW_1, LCD_COLUMN_8, LCD_PAGE_1);
-
-		}
-
-
 
 	}
-	
-	
+
+
+
 	return 0;
 }

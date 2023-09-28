@@ -32,4 +32,5 @@ MCAL/ADC \
 MCAL/DIO \
 MCAL/EXTI \
 MCAL/SREG \
+MCAL/Timer \
 
