@@ -7,6 +7,7 @@
         "errorstates.h": "c",
         "timer_private.h": "c",
         "dio_interface.h": "c",
-        "std.h": "c"
+        "std.h": "c",
+        "lcd_interface.h": "c"
     }
 }

@@ -264,15 +264,15 @@ ErrorState_t Timer_enu_SetDutyCycleForPWM(u8 Copy_u8_TimerNumber, u8 Copy_u8_Tim
                 {
                     if(Copy_u8_PulseType == TIMER_FAST_PWM_NON_INVERTING)
                     {
-                        //Using Duty Cycle Rule for non inverting phase PWM mode
-                        OCR2 = -(((Copy_f32_DutyCyclePercentage)*(TIMER_TCNT2_TOP + 1)) - TIMER_TCNT2_TOP);
+                        //Using Duty Cycle Rule for non-inverting fast PWM mode
+                        OCR2 = ((Copy_f32_DutyCyclePercentage)*(TIMER_TCNT2_TOP + 1)) - 1;
 
                         Local_u8_ErrorFlag = ES_OK;
                     }
                     else if (Copy_u8_PulseType == TIMER_FAST_PWM_INVERTING)
                     {
-                        //Using Duty Cycle Rule for non inverting phase PWM mode
-                        OCR2 = ((Copy_f32_DutyCyclePercentage)*(TIMER_TCNT2_TOP + 1)) - 1;
+                        //Using Duty Cycle Rule for non inverting fast PWM mode
+                        OCR2 = TIMER_TCNT2_TOP - ((Copy_f32_DutyCyclePercentage)*(TIMER_TCNT2_TOP + 1));
 
                         Local_u8_ErrorFlag = ES_OK;
                     }

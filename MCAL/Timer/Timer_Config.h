@@ -5,7 +5,7 @@
 #include "../../LIB/ErrorStates.h"
 
 
-#define TIMER_COUNT  1
+#define TIMER_COUNT  2
 
 typedef struct
 {

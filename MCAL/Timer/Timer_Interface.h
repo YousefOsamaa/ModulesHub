@@ -70,7 +70,7 @@
 #define TIMER_FAST_PWM_977_HZ      TIMER_PS_64  
 #define TIMER_FAST_PWM_488_HZ      TIMER_PS_128  //For Timer/Counter 2 only
 #define TIMER_FAST_PWM_244_HZ      TIMER_PS_256  
-#define TIMER_FAST_PWM_61_HZ       TIMER_PS_128  
+#define TIMER_FAST_PWM_61_HZ       TIMER_PS_1024  
 
 
 
