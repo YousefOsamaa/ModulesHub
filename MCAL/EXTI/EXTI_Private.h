@@ -46,6 +46,8 @@
 #define EXTI_LOW    0
 #define EXTI_HIGH   1
 
+//ISR Count
+#define EXTI_ISR_Count  3
 
 
 

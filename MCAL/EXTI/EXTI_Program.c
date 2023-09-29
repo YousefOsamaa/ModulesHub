@@ -8,7 +8,8 @@
 extern u8 EXTI_u8_INTCount;
 extern EXTI_t EXTI_astr_INTList [];
 
-static void (*pfun_ISRPointers[EXTI_INT_COUNT])(void) = {NULL, NULL, NULL};
+static void (*pfun_ISRPointers[EXTI_ISR_Count])(void*) = {NULL};
+static void* apvid_ISRParameters[EXTI_ISR_Count] = {NULL};
 
 
 //APIs implementations
@@ -104,13 +105,22 @@ extern ErrorState_t EXTI_enu_SeTPIF (u8 Copy_u8_INTNumber, u8 Copy_u8_Value)
     return Local_u8_ErrorFlag;
 }
 
-extern ErrorState_t EXTI_enu_SetCallBack(u8 Copy_u8_INTNumber, void (* Copy_pfun_AppFunction)(void))
+extern ErrorState_t EXTI_enu_SetCallBack(u8 Copy_u8_INTNumber, void (* Copy_pfun_AppFunction)(void), void* Copy_pvid_Parameters)
 {
     u8 Local_u8_ErrorFlag = ES_NOK;
 
     if(Copy_pfun_AppFunction)
     {
         pfun_ISRPointers[Copy_u8_INTNumber] = Copy_pfun_AppFunction;
+
+        apvid_ISRParameters[Copy_u8_INTNumber] = Copy_pvid_Parameters;
+
+        Local_u8_ErrorFlag = ES_OK;
+
+    }
+    else
+    {
+        Local_u8_ErrorFlag = ES_OUT_OF_RANGE;
     }
 
     return Local_u8_ErrorFlag;
@@ -126,7 +136,7 @@ void __vector_1 (void)
 {
     if(pfun_ISRPointers[EXTI_INT0])
     {
-        pfun_ISRPointers[EXTI_INT0] ();
+        pfun_ISRPointers[EXTI_INT0] (apvid_ISRParameters[EXTI_INT0]);
     }
 }
 //INT1
@@ -134,7 +144,7 @@ void __vector_2 (void)
 {
     if(pfun_ISRPointers[EXTI_INT1])
     {
-        pfun_ISRPointers[EXTI_INT1] ();
+        pfun_ISRPointers[EXTI_INT1] (apvid_ISRParameters[EXTI_INT1]);
     }
 }
 //INT2
@@ -142,7 +152,7 @@ void __vector_3 (void)
 {
     if(pfun_ISRPointers[EXTI_INT2])
     {
-        pfun_ISRPointers[EXTI_INT2] ();
+        pfun_ISRPointers[EXTI_INT2] (EXTI_INT2);
     }
     
 }

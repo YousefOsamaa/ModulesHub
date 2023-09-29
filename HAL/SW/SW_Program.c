@@ -13,26 +13,23 @@ extern u8 SW_u8_SwCount;
 //Functions' implementations
 extern ErrorState_t SW_enu_Initialization(void)
 {
-    u8 Local_u8_ErrorFlag = ES_NOK;
+    u8 Local_u8_ErrorFlag = ES_OK;
     u8 Local_u8_Index;
+    u8 Local_au8_ErrorStates [2] ={ES_OK, ES_NOK};
 
     for (Local_u8_Index = 0; Local_u8_Index < SW_u8_SwCount; Local_u8_Index++)
     {
         
-       Local_u8_ErrorFlag = DIO_enu_SetPinDiretion(SW_astr_SwList[Local_u8_Index].SW_Group,SW_astr_SwList[Local_u8_Index].SW_Pin,DIO_LOW);
-       if(Local_u8_ErrorFlag != ES_OK)
-       {
-        break;
-       }
-       Local_u8_ErrorFlag = (SW_astr_SwList[Local_u8_Index].SW_Group,SW_astr_SwList[Local_u8_Index].SW_Pin,SW_astr_SwList[Local_u8_Index].SW_IResistorState);
+       Local_au8_ErrorStates[0] = DIO_enu_SetPinDiretion(SW_astr_SwList[Local_u8_Index].SW_Group,SW_astr_SwList[Local_u8_Index].SW_Pin,DIO_LOW);
 
-        if(Local_u8_ErrorFlag != ES_OK)
-       {
-        break;
-       }
+       Local_au8_ErrorStates[1] = DIO_enu_SetPinState(SW_astr_SwList[Local_u8_Index].SW_Group,SW_astr_SwList[Local_u8_Index].SW_Pin,SW_astr_SwList[Local_u8_Index].SW_IResistorState);
+   
+        if((Local_au8_ErrorStates[0] == ES_NOK ) || (Local_au8_ErrorStates[1] == ES_NOK) )
+        {
+            Local_u8_ErrorFlag = ES_NOK;
+        }
+
     }
-
-    Local_u8_ErrorFlag = ES_OK;
 
 
     return Local_u8_ErrorFlag;

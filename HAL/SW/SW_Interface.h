@@ -1,8 +1,8 @@
 #ifndef SW_INTERFACE_FILE
 #define SW_INTERFACE_FILE
 
-#include "../../General/STD.h"
-#include "../../General/ErrorStates.h"
+#include "../../LIB/STD.h"
+#include "../../LIB/ErrorStates.h"
 
 //Switch Numbers
 #define SW_NUMBER_0     0

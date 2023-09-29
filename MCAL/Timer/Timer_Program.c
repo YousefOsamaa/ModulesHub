@@ -37,15 +37,15 @@ extern ErrorState_t Timer_enu_Initialization(void)
     return Local_u8_ErrorFlag;
 }
 
-extern ErrorState_t Timer_enu_SetOCRxValue(u8 Copy_u8_TimerNumer, u16 Copy_u16_Value)
+extern ErrorState_t Timer_enu_SetOCRxValue(u8 Copy_u8_TimerNumber, u16 Copy_u16_Value)
 {
     u8 Local_u8_ErrorFlag = ES_NOK;
 
-    switch (Copy_u8_TimerNumer)
+    switch (Copy_u8_TimerNumber)
     {
         case TIMER_0:
         {
-            OCR0 = (u8)Copy_u16_Value;
+            OCR0 = Copy_u16_Value;
 
             Local_u8_ErrorFlag = ES_OK;
             break;
@@ -59,23 +59,28 @@ extern ErrorState_t Timer_enu_SetOCRxValue(u8 Copy_u8_TimerNumer, u16 Copy_u16_V
 
         case TIMER_2:
         {
-            OCR2 = (u8)Copy_u16_Value;
+            OCR2 = Copy_u16_Value;
+
+            Local_u8_ErrorFlag = ES_OK;
 
             break;
         }
     
         default:
-        break;
+        {
+            Local_u8_ErrorFlag = ES_OUT_OF_RANGE;
+            break;
+        }
     }
 
     return Local_u8_ErrorFlag;
 }
 
-extern ErrorState_t Timer_enu_SetTCNTxValue(u8 Copy_u8_TimerNumer, u16 Copy_u16_Value)
+extern ErrorState_t Timer_enu_SetTCNTxValue(u8 Copy_u8_TimerNumber, u16 Copy_u16_Value)
 {
     u8 Local_u8_ErrorFlag = ES_NOK;
 
-    switch (Copy_u8_TimerNumer)
+    switch (Copy_u8_TimerNumber)
     {
         case TIMER_0:
         {
@@ -99,7 +104,57 @@ extern ErrorState_t Timer_enu_SetTCNTxValue(u8 Copy_u8_TimerNumer, u16 Copy_u16_
         }
     
         default:
-        break;
+        {
+            Local_u8_ErrorFlag = ES_OUT_OF_RANGE;
+            break;
+        }
+    }
+
+    return Local_u8_ErrorFlag;
+}
+
+extern ErrorState_t Timer_enu_ReadTCNTxValue(u8 Copy_u8_TimerNumber, u16* Copy_u16_Value)
+{
+    u8 Local_u8_ErrorFlag = ES_NOK;
+
+    if(Copy_u16_Value)
+    {
+        switch (Copy_u8_TimerNumber)
+        {
+            case TIMER_0:
+            {
+                *Copy_u16_Value = TCNT0;
+
+                Local_u8_ErrorFlag = ES_OK;
+                break;
+            }
+
+            case TIMER_1:
+            {
+
+                break;
+            }
+
+            case TIMER_2:
+            {
+                *Copy_u16_Value = TCNT2;
+
+                Local_u8_ErrorFlag = ES_OK;
+
+                break;
+            }
+        
+            default:
+            {
+                Local_u8_ErrorFlag = ES_OUT_OF_RANGE;
+                break;
+            }
+        }
+
+    }
+    else
+    {
+        Local_u8_ErrorFlag = ES_NULL_POINTER;
     }
 
     return Local_u8_ErrorFlag;
@@ -110,6 +165,144 @@ extern ErrorState_t Timer_enu_SetClock (u8 Copy_u8_TimerNumber, u8 Copy_u8_Clock
     u8 Local_u8_ErrorFlag = ES_NOK;
 
     Local_u8_ErrorFlag = enu_SetClockSelection(Copy_u8_TimerNumber, Copy_u8_ClockSelection);
+
+    return Local_u8_ErrorFlag;
+}
+
+ErrorState_t Timer_enu_SetDutyCycleForPWM(u8 Copy_u8_TimerNumber, u8 Copy_u8_TimerMode, u8 Copy_u8_PulseType, f32 Copy_f32_DutyCyclePercentage)
+{
+    u8 Local_u8_ErrorFlag = ES_NOK;
+
+    if ((Copy_f32_DutyCyclePercentage >= TIMER_DUTYCYCLE_0) && (Copy_f32_DutyCyclePercentage <= TIMER_DUTYCYCLE_100))
+    {
+        switch (Copy_u8_TimerNumber)
+        {
+            case TIMER_0:
+            {
+                if (Copy_u8_TimerMode == TIMER_PHASE_PWM)
+                {
+                    if(Copy_u8_PulseType == TIMER_PHASE_PWM_NON_INVERTING)
+                    {
+                        //Using Duty Cycle Rule for non-inverting fast PWM mode
+                        OCR0 = Copy_f32_DutyCyclePercentage*TIMER_TCNT0_TOP;
+
+                        Local_u8_ErrorFlag = ES_OK;
+                    }
+                    else if (Copy_u8_PulseType == TIMER_PHASE_PWM_INVERTING)
+                    {
+                        //Using Duty Cycle Rule for non inverting fast PWM mode
+                        OCR0 = TIMER_TCNT0_TOP - (Copy_f32_DutyCyclePercentage*TIMER_TCNT0_TOP) ;
+
+                        Local_u8_ErrorFlag = ES_OK;
+                    }
+                    else
+                    {
+                        Local_u8_ErrorFlag = ES_OUT_OF_RANGE;
+                    }
+
+                }
+                else if (Copy_u8_TimerMode == TIMER_FAST_PWM)
+                {
+                    if(Copy_u8_PulseType == TIMER_FAST_PWM_NON_INVERTING)
+                    {
+                        //Using Duty Cycle Rule for non-inverting fast PWM mode
+                        OCR0 = ((Copy_f32_DutyCyclePercentage)*(TIMER_TCNT0_TOP + 1)) - 1;
+
+                        Local_u8_ErrorFlag = ES_OK;
+                    }
+                    else if (Copy_u8_PulseType == TIMER_FAST_PWM_INVERTING)
+                    {
+                        //Using Duty Cycle Rule for non inverting fast PWM mode
+                        OCR0 = TIMER_TCNT0_TOP - ((Copy_f32_DutyCyclePercentage)*(TIMER_TCNT0_TOP + 1)) ;
+
+                        Local_u8_ErrorFlag = ES_OK;
+                    }
+                    else
+                    {
+                        Local_u8_ErrorFlag = ES_OUT_OF_RANGE;
+                    }
+                }
+                else
+                {
+                    Local_u8_ErrorFlag = ES_OUT_OF_RANGE;
+                }
+
+                break;
+            }
+
+            case TIMER_1:
+            {
+                
+                break;
+            }
+
+            case TIMER_2:
+            {
+                if (Copy_u8_TimerMode == TIMER_PHASE_PWM)
+                {
+                    if(Copy_u8_PulseType == TIMER_PHASE_PWM_NON_INVERTING)
+                    {
+                        //Using Duty Cycle Rule for non-inverting fast PWM mode
+                        OCR2 = Copy_f32_DutyCyclePercentage*TIMER_TCNT2_TOP;
+
+                        Local_u8_ErrorFlag = ES_OK;
+                    }
+                    else if (Copy_u8_PulseType == TIMER_PHASE_PWM_INVERTING)
+                    {
+                        //Using Duty Cycle Rule for non inverting fast PWM mode
+                        OCR2 = TIMER_TCNT2_TOP - (Copy_f32_DutyCyclePercentage*TIMER_TCNT2_TOP) ;
+
+                        Local_u8_ErrorFlag = ES_OK;
+                    }
+                    else
+                    {
+                        Local_u8_ErrorFlag = ES_OUT_OF_RANGE;
+                    }
+
+                }
+                else if (Copy_u8_TimerMode == TIMER_FAST_PWM)
+                {
+                    if(Copy_u8_PulseType == TIMER_FAST_PWM_NON_INVERTING)
+                    {
+                        //Using Duty Cycle Rule for non inverting phase PWM mode
+                        OCR2 = -(((Copy_f32_DutyCyclePercentage)*(TIMER_TCNT2_TOP + 1)) - TIMER_TCNT2_TOP);
+
+                        Local_u8_ErrorFlag = ES_OK;
+                    }
+                    else if (Copy_u8_PulseType == TIMER_FAST_PWM_INVERTING)
+                    {
+                        //Using Duty Cycle Rule for non inverting phase PWM mode
+                        OCR2 = ((Copy_f32_DutyCyclePercentage)*(TIMER_TCNT2_TOP + 1)) - 1;
+
+                        Local_u8_ErrorFlag = ES_OK;
+                    }
+                    else
+                    {
+                        Local_u8_ErrorFlag = ES_OUT_OF_RANGE;
+                    }
+
+                    Local_u8_ErrorFlag = ES_OK;
+                }
+                else
+                {
+                    Local_u8_ErrorFlag = ES_OUT_OF_RANGE;
+                }
+                
+                break;
+            }
+        
+            default:
+            {
+                Local_u8_ErrorFlag = ES_OUT_OF_RANGE;
+                break;
+            }
+        }
+    }
+    else
+    {
+        Local_u8_ErrorFlag = ES_OUT_OF_RANGE;
+    }
+
 
     return Local_u8_ErrorFlag;
 }
@@ -156,6 +349,26 @@ extern ErrorState_t Timer_enu_SetCallBack (u8 Copy_u8_TimerNumber, u8 Copy_u8_Ti
 
             case TIMER_2:
             {
+                if(Copy_u8_TimerMode == TIMER_NORMAL)
+                {
+                    apfun_ISRpointers[TIMER_2_OVERFLOW_ISR] = Copy_pfun_AppFunction;
+
+                    apvid_ISRParameters[TIMER_2_OVERFLOW_ISR] = Copy_pvid_Parameters;
+
+                    Local_u8_ErrorFlag = ES_OK;
+                }
+                else if(Copy_u8_TimerMode == TIMER_CTC)
+                {
+                    apfun_ISRpointers[TIMER_2_CTC_ISR] = Copy_pfun_AppFunction;
+
+                    apvid_ISRParameters[TIMER_2_CTC_ISR] = Copy_pvid_Parameters;
+
+                    Local_u8_ErrorFlag = ES_OK;
+                }
+                else
+                {
+                    Local_u8_ErrorFlag = ES_OUT_OF_RANGE;
+                }
 
                 break;
             }
@@ -175,8 +388,26 @@ extern ErrorState_t Timer_enu_SetCallBack (u8 Copy_u8_TimerNumber, u8 Copy_u8_Ti
 
 
 //ISR
+void __vector_4 (void)__attribute__((signal));
+void __vector_5 (void)__attribute__((signal));
 void __vector_10 (void)__attribute__((signal));
 void __vector_11 (void)__attribute__((signal));
+
+void __vector_4 (void)
+{
+    if(apfun_ISRpointers[TIMER_2_CTC_ISR])
+    {
+       apfun_ISRpointers[TIMER_2_CTC_ISR](apvid_ISRParameters[TIMER_2_CTC_ISR]);
+    }
+}
+
+void __vector_5 (void)
+{
+    if(apfun_ISRpointers[TIMER_2_CTC_ISR])
+    {
+       apfun_ISRpointers[TIMER_2_CTC_ISR](apvid_ISRParameters[TIMER_2_CTC_ISR]);
+    }
+}
 
 void __vector_10 (void)
 {
@@ -242,8 +473,9 @@ static ErrorState_t enu_SetTimerMode (u8 Copy_u8_TimerNumber, u8 Copy_u8_TimerMo
             {
                 Local_u8_ErrorFlag = ES_OUT_OF_RANGE;
             }
+            
+            break;
         }
-        break;
      
         case TIMER_1:
         {
@@ -253,6 +485,42 @@ static ErrorState_t enu_SetTimerMode (u8 Copy_u8_TimerNumber, u8 Copy_u8_TimerMo
      
         case TIMER_2:
         {
+            if(Copy_u8_TimerMode == TIMER_NORMAL)
+            {
+                //Bits contain 00
+                TCCR2 &= ~(1 << TCCR2_WGM20);
+                TCCR2 &= ~(1 << TCCR2_WGM21);
+
+                Local_u8_ErrorFlag = ES_OK;
+            }
+            else if(Copy_u8_TimerMode == TIMER_CTC)
+            {
+                //Bits contain 01
+                TCCR2 |= (1 << TCCR2_WGM20);
+                TCCR2 &= ~(1 << TCCR2_WGM21);
+                
+                Local_u8_ErrorFlag = ES_OK;
+            }
+            else if(Copy_u8_TimerMode == TIMER_PHASE_PWM)
+            {
+                //Bits contain 10
+                TCCR2 &= ~(1 << TCCR2_WGM20);
+                TCCR2 |= (1 << TCCR2_WGM21);
+                
+                Local_u8_ErrorFlag = ES_OK;
+            }
+            else if(Copy_u8_TimerMode == TIMER_FAST_PWM)
+            {
+                //Bits contain 11
+                TCCR2 |= (1 << TCCR2_WGM20);
+                TCCR2 |= (1 << TCCR2_WGM21);
+
+                Local_u8_ErrorFlag = ES_OK;
+            }
+            else 
+            {
+                Local_u8_ErrorFlag = ES_OUT_OF_RANGE;
+            }
 
         }
         break;
@@ -373,6 +641,97 @@ static ErrorState_t enu_SetClockSelection(u8 Copy_u8_TimerNumber, u8 Copy_u8_Clo
     
         case TIMER_2:
         {
+            //Choosing I/O clock each time 
+            //Bit contains 0
+            ASSR &= ~( 1 << ASSR_AS2);
+            
+            switch (Copy_u8_ClockSelection)
+            {
+                case TIMER_V_GND:
+                {
+                    //Bits contain 000
+                    TCCR2 &= ~ (1 << TCCR2_CS20);
+                    TCCR2 &= ~ (1 << TCCR2_CS21);
+                    TCCR2 &= ~ (1 << TCCR2_CS22);
+
+                    Local_u8_ErrorFlag = ES_OK;
+                    break;
+                }
+                case TIMER_PS_1:
+                {
+                    //Bits contain 001
+                    TCCR2 |= (1 << TCCR2_CS20);
+                    TCCR2 &= ~ (1 << TCCR2_CS21);
+                    TCCR2 &= ~ (1 << TCCR2_CS22);
+
+                    Local_u8_ErrorFlag = ES_OK;
+                    break;
+                }
+                case TIMER_PS_8:
+                {
+                    //Bits contain 010
+                    TCCR2 &= ~(1 << TCCR2_CS20);
+                    TCCR2 |= (1  << TCCR2_CS21);
+                    TCCR2 &= ~(1 << TCCR2_CS22);
+                    
+                    Local_u8_ErrorFlag = ES_OK;
+                    break;
+                }
+                case TIMER_PS_32:
+                {
+                    //Bits contain 011
+                    TCCR2 |= (1 << TCCR2_CS20);
+                    TCCR2 |= (1 << TCCR2_CS21);
+                    TCCR2 &= ~ (1 << TCCR2_CS22);
+                    
+                    Local_u8_ErrorFlag = ES_OK;
+                    break;
+                }
+                case TIMER_PS_64:
+                {
+                    //Bits contain 100
+                    TCCR2 &= ~(1 << TCCR2_CS20);
+                    TCCR2 &= ~(1 << TCCR2_CS21);
+                    TCCR2 |= (1 << TCCR2_CS22);
+                    
+                    Local_u8_ErrorFlag = ES_OK;
+                    break;
+                }
+                case TIMER_PS_128:
+                {
+                    //Bits contain 101
+                    TCCR2 |= (1 << TCCR2_CS20);
+                    TCCR2 &= ~ (1 << TCCR2_CS21);
+                    TCCR2 |= (1 << TCCR2_CS22);
+                    
+                    Local_u8_ErrorFlag = ES_OK;
+                    break;
+                }
+                case TIMER_PS_256:
+                {
+                    //Bits contain 110
+                    TCCR2 &= ~(1 << TCCR2_CS20);
+                    TCCR2 |= (1 << TCCR2_CS21);
+                    TCCR2 |= (1 << TCCR2_CS22);
+                    
+                    Local_u8_ErrorFlag = ES_OK;
+                    break;
+                }
+                case TIMER_PS_1024:
+                {
+                    //Bits contain 111
+                    TCCR2 |= (1 << TCCR2_CS20);
+                    TCCR2 |= (1 << TCCR2_CS21);
+                    TCCR2 |= (1 << TCCR2_CS22);
+                    
+                    Local_u8_ErrorFlag = ES_OK;
+                    break;
+                }
+                
+                default:
+                Local_u8_ErrorFlag = ES_OUT_OF_RANGE;
+                break;
+            }
 
             
 
@@ -519,14 +878,14 @@ static ErrorState_t enu_SetOCxBehavior(u8 Copy_u8_TimerNumber, u8 Copy_u8_TimerM
             else if ((Copy_u8_TimerMode == TIMER_PHASE_PWM) || (Copy_u8_TimerMode == TIMER_FAST_PWM))
             {
                 //PWM modes
-                if(Copy_u8_OCxPinBehavior == TIMER_FAST_PWM_NON_INVERTING)
+                if((Copy_u8_OCxPinBehavior == TIMER_FAST_PWM_NON_INVERTING || (Copy_u8_OCxPinBehavior == TIMER_PHASE_PWM_NON_INVERTING)))
                 {
                     //Bits contain 10
                     TCCR0 |= (1 << TCCR0_COM01);
 
                     Local_u8_ErrorFlag = ES_OK;
                 }
-                else if (Copy_u8_OCxPinBehavior == TIMER_FAST_PWM_INVERTING)
+                else if ((Copy_u8_OCxPinBehavior == TIMER_FAST_PWM_INVERTING) || (Copy_u8_OCxPinBehavior == TIMER_PHASE_PWM_INVERTING))
                 {
                     //Bits contain 11
                     TCCR0 |= (3 << TCCR0_COM00);

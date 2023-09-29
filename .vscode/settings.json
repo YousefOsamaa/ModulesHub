@@ -5,6 +5,8 @@
         "exti_config.h": "c",
         "exti_private.h": "c",
         "errorstates.h": "c",
-        "timer_private.h": "c"
+        "timer_private.h": "c",
+        "dio_interface.h": "c",
+        "std.h": "c"
     }
 }

@@ -22,7 +22,7 @@
 #define PUSHBUTTON_2_IRESISTOR   DIO_FLOAT
 
 //Number of Switches used
-#define SW_MAX_NUMBER  3
+#define SW_MAX_NUMBER  1
 
 
 

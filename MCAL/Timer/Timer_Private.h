@@ -189,14 +189,16 @@ typedef enum
 
 
 //OCx pin behavior for non-PWM modes
-#define TIMER_OCX_DISCONNECTED      0
-#define TIMER_TOGGLE_OCX            1
-#define TIMER_CLEAR_OCX             2
-#define TIMER_SET_OCX               3
+#define TIMER_OCX_DISCONNECTED           0
+#define TIMER_TOGGLE_OCX                 1
+#define TIMER_CLEAR_OCX                  2
+#define TIMER_SET_OCX                    3
 
 //OCx pin behavior PWM modes 
-#define TIMER_FAST_PWM_NON_INVERTING    4
-#define TIMER_FAST_PWM_INVERTING        5
+#define TIMER_FAST_PWM_NON_INVERTING     4
+#define TIMER_FAST_PWM_INVERTING         5
+#define TIMER_PHASE_PWM_NON_INVERTING    6
+#define TIMER_PHASE_PWM_INVERTING        7
 
 
 //Timer numbers
@@ -210,7 +212,6 @@ typedef enum
 #define TIMER_ISR_COUNT   8
 
 //ISR Pointers Location
-
 #define TIMER_2_CTC_ISR                 0
 #define TIMER_2_OVERFLOW_ISR            1
 #define TIMER_1_CAPTURE_EVENT_ISR       2
@@ -220,6 +221,33 @@ typedef enum
 #define TIMER_0_CTC_ISR                 6
 #define TIMER_0_OVERFLOW_ISR            7
 
+
+//Duty cycle ranges
+#define TIMER_DUTYCYCLE_100    1
+#define TIMER_DUTYCYCLE_0      0
+
+//TCNtx Values
+#define TIMER_TCNT0_TOP   256
+#define TIMER_TCNT1_TOP   65536
+#define TIMER_TCNT2_TOP   256
+
+//Available PWM frequencies for phase PWM
+#define TIMER_PHASE_PWM_31373_HZ   TIMER_PS_1
+#define TIMER_PHASE_PWM_3922_HZ    TIMER_PS_8
+#define TIMER_PHASE_PWM_980_HZ     TIMER_PS_32  //For Timer/Counter 2 only
+#define TIMER_PHASE_PWM_490_HZ     TIMER_PS_64  
+#define TIMER_PHASE_PWM_245_HZ     TIMER_PS_128  //For Timer/Counter 2 only
+#define TIMER_PHASE_PWM_123_HZ     TIMER_PS_256  
+#define TIMER_PHASE_PWM_31_HZ      TIMER_PS_128  
+
+//Available PWM frequencies for phase PWM
+#define TIMER_FAST_PWM_62500_HZ   TIMER_PS_1
+#define TIMER_FAST_PWM_7813_HZ    TIMER_PS_8
+#define TIMER_FAST_PWM_1953_HZ     TIMER_PS_32  //For Timer/Counter 2 only
+#define TIMER_FAST_PWM_977_HZ     TIMER_PS_64  
+#define TIMER_FAST_PWM_488_HZ     TIMER_PS_128  //For Timer/Counter 2 only
+#define TIMER_FAST_PWM_244_HZ     TIMER_PS_256  
+#define TIMER_FAST_PWM_61_HZ      TIMER_PS_128  
 
 
 //Local functions' prototypes

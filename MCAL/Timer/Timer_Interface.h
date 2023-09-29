@@ -35,15 +35,18 @@
 
 
 //OCx pin behavior for non-PWM modes
-#define TIMER_OCX_DISCONNECTED      0
-#define TIMER_TOGGLE_OCX            1
-#define TIMER_CLEAR_OCX             2
-#define TIMER_SET_OCX               3
+#define TIMER_OCX_DISCONNECTED          0
+#define TIMER_TOGGLE_OCX                1
+#define TIMER_CLEAR_OCX                 2
+#define TIMER_SET_OCX                   3
 
 
 //OCx pin behavior PWM modes 
-#define TIMER_FAST_PWM_NON_INVERTING    4
-#define TIMER_FAST_PWM_INVERTING        5
+#define TIMER_FAST_PWM_NON_INVERTING     4
+#define TIMER_FAST_PWM_INVERTING         5 
+#define TIMER_PHASE_PWM_NON_INVERTING    6
+#define TIMER_PHASE_PWM_INVERTING        7
+
 
 
 //Timer numbers
@@ -51,16 +54,38 @@
 #define TIMER_1  1
 #define TIMER_2  2
 
+//Available PWM frequencies for phase PWM
+#define TIMER_PHASE_PWM_31373_HZ   TIMER_PS_1
+#define TIMER_PHASE_PWM_3922_HZ    TIMER_PS_8
+#define TIMER_PHASE_PWM_980_HZ     TIMER_PS_32  //For Timer/Counter 2 only
+#define TIMER_PHASE_PWM_490_HZ     TIMER_PS_64  
+#define TIMER_PHASE_PWM_245_HZ     TIMER_PS_128  //For Timer/Counter 2 only
+#define TIMER_PHASE_PWM_123_HZ     TIMER_PS_256  
+#define TIMER_PHASE_PWM_31_HZ      TIMER_PS_128  
+
+//Available PWM frequencies for phase PWM
+#define TIMER_FAST_PWM_62500_HZ    TIMER_PS_1
+#define TIMER_FAST_PWM_7813_HZ     TIMER_PS_8
+#define TIMER_FAST_PWM_1953_HZ     TIMER_PS_32  //For Timer/Counter 2 only
+#define TIMER_FAST_PWM_977_HZ      TIMER_PS_64  
+#define TIMER_FAST_PWM_488_HZ      TIMER_PS_128  //For Timer/Counter 2 only
+#define TIMER_FAST_PWM_244_HZ      TIMER_PS_256  
+#define TIMER_FAST_PWM_61_HZ       TIMER_PS_128  
+
 
 
 //APIs prototypes
 extern ErrorState_t Timer_enu_Initialization(void);
 
-extern ErrorState_t Timer_enu_SetOCRxValue(u8 Copy_u8_TimerNumer, u16 Copy_u16_Value);
+extern ErrorState_t Timer_enu_SetOCRxValue(u8 Copy_u8_TimerNumber, u16 Copy_u16_Value);
 
-extern ErrorState_t Timer_enu_SetTCNTxValue(u8 Copy_u8_TimerNumer, u16 Copy_u16_Value);
+extern ErrorState_t Timer_enu_SetTCNTxValue(u8 Copy_u8_TimerNumber, u16 Copy_u16_Value);
+
+extern ErrorState_t Timer_enu_ReadTCNTxValue(u8 Copy_u8_TimerNumber, u16* Copy_u16_Value);
 
 extern ErrorState_t Timer_enu_SetClock (u8 Copy_u8_TimerNumber, u8 Copy_u8_ClockSelection);
+
+extern ErrorState_t Timer_enu_SetDutyCycleForPWM(u8 Copy_u8_TimerNumber,u8 Copy_u8_TimerMode, u8 Copy_u8_PulseType, f32 Copy_f32_DutyCyclePercentage);
 
 extern ErrorState_t Timer_enu_SetCallBack (u8 Copy_u8_TimerNumber, u8 Copy_u8_TimerMode, void (*Copy_pfun_AppFunction)(void*), void* Copy_pvid_Parameters);
 
