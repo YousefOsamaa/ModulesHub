@@ -243,7 +243,7 @@ typedef enum
 //Available PWM frequencies for phase PWM
 #define TIMER_FAST_PWM_62500_HZ   TIMER_PS_1
 #define TIMER_FAST_PWM_7813_HZ    TIMER_PS_8
-#define TIMER_FAST_PWM_1953_HZ     TIMER_PS_32  //For Timer/Counter 2 only
+#define TIMER_FAST_PWM_1953_HZ    TIMER_PS_32  //For Timer/Counter 2 only
 #define TIMER_FAST_PWM_977_HZ     TIMER_PS_64  
 #define TIMER_FAST_PWM_488_HZ     TIMER_PS_128  //For Timer/Counter 2 only
 #define TIMER_FAST_PWM_244_HZ     TIMER_PS_256  
