@@ -227,9 +227,9 @@ typedef enum
 #define TIMER_DUTYCYCLE_0      0
 
 //TCNtx Values
-#define TIMER_TCNT0_TOP   256
+#define TIMER_TCNT0_TOP   255
 #define TIMER_TCNT1_TOP   65536
-#define TIMER_TCNT2_TOP   256
+#define TIMER_TCNT2_TOP   255
 
 //Available PWM frequencies for phase PWM
 #define TIMER_PHASE_PWM_31373_HZ   TIMER_PS_1

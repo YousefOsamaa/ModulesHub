@@ -176,7 +176,7 @@ LOAD c:/sdk_win_64/sdk_win_64/winavr/bin/../lib/gcc/avr/4.3.3/avr5\libgcc.a
 .rela.plt
  *(.rela.plt)
 
-.text           0x00000000     0x54f4
+.text           0x00000000     0x54ce
  *(.vectors)
  .vectors       0x00000000       0x54 c:/sdk_win_64/sdk_win_64/winavr/bin/../lib/gcc/avr/4.3.3/../../../../avr/lib/avr5/crtm32.o
                 0x00000000                __vectors
@@ -558,26 +558,26 @@ LOAD c:/sdk_win_64/sdk_win_64/winavr/bin/../lib/gcc/avr/4.3.3/avr5\libgcc.a
  .text.Buzzer_enu_TurnOffAllBuzzers
                 0x0000530e       0x5e ./HAL/Buzzer/Buzzer_Program.o
                 0x0000530e                Buzzer_enu_TurnOffAllBuzzers
- .text.main     0x0000536c       0x5e ./APP/Main.o
+ .text.main     0x0000536c       0x38 ./APP/Main.o
                 0x0000536c                main
- .text.libgcc   0x000053ca       0x3e c:/sdk_win_64/sdk_win_64/winavr/bin/../lib/gcc/avr/4.3.3/avr5\libgcc.a(_mulsi3.o)
-                0x000053ca                __mulsi3
- .text.libgcc   0x00005408       0x44 c:/sdk_win_64/sdk_win_64/winavr/bin/../lib/gcc/avr/4.3.3/avr5\libgcc.a(_udivmodsi4.o)
-                0x00005408                __udivmodsi4
- .text.libgcc   0x0000544c       0x36 c:/sdk_win_64/sdk_win_64/winavr/bin/../lib/gcc/avr/4.3.3/avr5\libgcc.a(_divmodsi4.o)
-                0x0000544c                __divmodsi4
- .text.libgcc   0x00005482        0x0 c:/sdk_win_64/sdk_win_64/winavr/bin/../lib/gcc/avr/4.3.3/avr5\libgcc.a(_exit.o)
- .text.libgcc   0x00005482        0x0 c:/sdk_win_64/sdk_win_64/winavr/bin/../lib/gcc/avr/4.3.3/avr5\libgcc.a(_copy_data.o)
- .text.libgcc   0x00005482        0x0 c:/sdk_win_64/sdk_win_64/winavr/bin/../lib/gcc/avr/4.3.3/avr5\libgcc.a(_clear_bss.o)
- .text.libgcc   0x00005482       0x38 c:/sdk_win_64/sdk_win_64/winavr/bin/../lib/gcc/avr/4.3.3/avr5\libgcc.a(_prologue.o)
-                0x00005482                __prologue_saves__
- .text.libgcc   0x000054ba       0x36 c:/sdk_win_64/sdk_win_64/winavr/bin/../lib/gcc/avr/4.3.3/avr5\libgcc.a(_epilogue.o)
-                0x000054ba                __epilogue_restores__
-                0x000054f0                . = ALIGN (0x2)
+ .text.libgcc   0x000053a4       0x3e c:/sdk_win_64/sdk_win_64/winavr/bin/../lib/gcc/avr/4.3.3/avr5\libgcc.a(_mulsi3.o)
+                0x000053a4                __mulsi3
+ .text.libgcc   0x000053e2       0x44 c:/sdk_win_64/sdk_win_64/winavr/bin/../lib/gcc/avr/4.3.3/avr5\libgcc.a(_udivmodsi4.o)
+                0x000053e2                __udivmodsi4
+ .text.libgcc   0x00005426       0x36 c:/sdk_win_64/sdk_win_64/winavr/bin/../lib/gcc/avr/4.3.3/avr5\libgcc.a(_divmodsi4.o)
+                0x00005426                __divmodsi4
+ .text.libgcc   0x0000545c        0x0 c:/sdk_win_64/sdk_win_64/winavr/bin/../lib/gcc/avr/4.3.3/avr5\libgcc.a(_exit.o)
+ .text.libgcc   0x0000545c        0x0 c:/sdk_win_64/sdk_win_64/winavr/bin/../lib/gcc/avr/4.3.3/avr5\libgcc.a(_copy_data.o)
+ .text.libgcc   0x0000545c        0x0 c:/sdk_win_64/sdk_win_64/winavr/bin/../lib/gcc/avr/4.3.3/avr5\libgcc.a(_clear_bss.o)
+ .text.libgcc   0x0000545c       0x38 c:/sdk_win_64/sdk_win_64/winavr/bin/../lib/gcc/avr/4.3.3/avr5\libgcc.a(_prologue.o)
+                0x0000545c                __prologue_saves__
+ .text.libgcc   0x00005494       0x36 c:/sdk_win_64/sdk_win_64/winavr/bin/../lib/gcc/avr/4.3.3/avr5\libgcc.a(_epilogue.o)
+                0x00005494                __epilogue_restores__
+                0x000054ca                . = ALIGN (0x2)
  *(.fini9)
- .fini9         0x000054f0        0x0 c:/sdk_win_64/sdk_win_64/winavr/bin/../lib/gcc/avr/4.3.3/avr5\libgcc.a(_exit.o)
-                0x000054f0                exit
-                0x000054f0                _exit
+ .fini9         0x000054ca        0x0 c:/sdk_win_64/sdk_win_64/winavr/bin/../lib/gcc/avr/4.3.3/avr5\libgcc.a(_exit.o)
+                0x000054ca                exit
+                0x000054ca                _exit
  *(.fini9)
  *(.fini8)
  *(.fini8)
@@ -596,11 +596,11 @@ LOAD c:/sdk_win_64/sdk_win_64/winavr/bin/../lib/gcc/avr/4.3.3/avr5\libgcc.a
  *(.fini1)
  *(.fini1)
  *(.fini0)
- .fini0         0x000054f0        0x4 c:/sdk_win_64/sdk_win_64/winavr/bin/../lib/gcc/avr/4.3.3/avr5\libgcc.a(_exit.o)
+ .fini0         0x000054ca        0x4 c:/sdk_win_64/sdk_win_64/winavr/bin/../lib/gcc/avr/4.3.3/avr5\libgcc.a(_exit.o)
  *(.fini0)
-                0x000054f4                _etext = .
+                0x000054ce                _etext = .
 
-.data           0x00800060      0x148 load address 0x000054f4
+.data           0x00800060      0x148 load address 0x000054ce
                 0x00800060                PROVIDE (__data_start, .)
  *(.data)
  .data          0x00800060        0x0 c:/sdk_win_64/sdk_win_64/winavr/bin/../lib/gcc/avr/4.3.3/../../../../avr/lib/avr5/crtm32.o
@@ -763,8 +763,8 @@ LOAD c:/sdk_win_64/sdk_win_64/winavr/bin/../lib/gcc/avr/4.3.3/avr5\libgcc.a
                 0x008001d6        0x2 ./MCAL/ADC/ADC_Program.o
  *(COMMON)
                 0x008001d8                PROVIDE (__bss_end, .)
-                0x000054f4                __data_load_start = LOADADDR (.data)
-                0x0000563c                __data_load_end = (__data_load_start + SIZEOF (.data))
+                0x000054ce                __data_load_start = LOADADDR (.data)
+                0x00005616                __data_load_end = (__data_load_start + SIZEOF (.data))
 
 .noinit         0x008001d8        0x0
                 0x008001d8                PROVIDE (__noinit_start, .)
@@ -789,7 +789,7 @@ LOAD c:/sdk_win_64/sdk_win_64/winavr/bin/../lib/gcc/avr/4.3.3/avr5\libgcc.a
 .signature
  *(.signature*)
 
-.stab           0x00000000     0x7500
+.stab           0x00000000     0x74dc
  *(.stab)
  .stab          0x00000000      0x324 ./MCAL/Timer/Timer_Config.o
  .stab          0x00000324     0x1524 ./MCAL/Timer/Timer_Program.o
@@ -826,8 +826,8 @@ LOAD c:/sdk_win_64/sdk_win_64/winavr/bin/../lib/gcc/avr/4.3.3/avr5\libgcc.a
                                 0x21c (size before relaxing)
  .stab          0x00006e70      0x414 ./HAL/Buzzer/Buzzer_Program.o
                                 0x51c (size before relaxing)
- .stab          0x00007284      0x27c ./APP/Main.o
-                                0x414 (size before relaxing)
+ .stab          0x00007284      0x258 ./APP/Main.o
+                                0x3f0 (size before relaxing)
 
 .stabstr        0x00000000     0x2f3d
  *(.stabstr)

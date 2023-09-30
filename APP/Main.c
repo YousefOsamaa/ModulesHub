@@ -16,23 +16,19 @@ int main()
 	DIO_enu_SetPinDiretion(DIO_PIN_GROUP_B, DIO_PIN_3, DIO_PIN_WRITE);
 	DIO_enu_SetPinValue(DIO_PIN_GROUP_B, DIO_PIN_3, DIO_LOW);
 
-	//Configuring Oc0
-	DIO_enu_SetPinDiretion(DIO_PIN_GROUP_D, DIO_PIN_7, DIO_PIN_WRITE);
-	DIO_enu_SetPinValue(DIO_PIN_GROUP_D, DIO_PIN_7, DIO_LOW);
-
-	Timer_enu_SetDutyCycleForPWM(TIMER_0, TIMER_PHASE_PWM, TIMER_PHASE_PWM_INVERTING, 0.5);
-	Timer_enu_SetDutyCycleForPWM(TIMER_2, TIMER_PHASE_PWM, TIMER_PHASE_PWM_INVERTING, 0.5);
+	Timer_enu_SetDutyCycleForPWM(TIMER_0, TIMER_FAST_PWM, TIMER_FAST_PWM_INVERTING, 0.35);
+	
 
 	//Initializng timer0
 	Timer_enu_Initialization();
 
 	while (1)
 	{
-			/* code */
+
 	}
 	
 
-	
+	return 0;
 }
 
 
