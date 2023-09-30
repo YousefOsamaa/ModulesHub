@@ -63,7 +63,7 @@
 #define TIMER_PHASE_PWM_123_HZ     TIMER_PS_256  
 #define TIMER_PHASE_PWM_31_HZ      TIMER_PS_128  
 
-//Available PWM frequencies for phase PWM
+//Available PWM frequencies for fast PWM
 #define TIMER_FAST_PWM_62500_HZ    TIMER_PS_1
 #define TIMER_FAST_PWM_7813_HZ     TIMER_PS_8
 #define TIMER_FAST_PWM_1953_HZ     TIMER_PS_32  //For Timer/Counter 2 only
@@ -87,10 +87,13 @@ extern ErrorState_t Timer_enu_SetClock (u8 Copy_u8_TimerNumber, u8 Copy_u8_Clock
 
 extern ErrorState_t Timer_enu_SetDutyCycleForPWM(u8 Copy_u8_TimerNumber,u8 Copy_u8_TimerMode, u8 Copy_u8_PulseType, f32 Copy_f32_DutyCyclePercentage);
 
+extern ErrorState_t Timer_enu_ForceCompareMatch (u8 Copy_u8_TimerNumber, u8 Copy_u8_TimerMode);
+
+extern ErrorState_t Timer_enu_SetTimerMode (u8 Copy_u8_TimerNumber, u8 Copy_TimerMode);
+
+extern ErrorState_t Timer_enu_TimeDelay(u8 Copy_u8_TimerNumber, u8 Copy_u8_TimeinSec);
+
 extern ErrorState_t Timer_enu_SetCallBack (u8 Copy_u8_TimerNumber, u8 Copy_u8_TimerMode, void (*Copy_pfun_AppFunction)(void*), void* Copy_pvid_Parameters);
-
-
-
 
 
 

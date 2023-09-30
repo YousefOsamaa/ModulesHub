@@ -12,46 +12,26 @@
 
 int main()
 {
-	//Configuring OC0
+	//Configuring Oc0
 	DIO_enu_SetPinDiretion(DIO_PIN_GROUP_B, DIO_PIN_3, DIO_PIN_WRITE);
 	DIO_enu_SetPinValue(DIO_PIN_GROUP_B, DIO_PIN_3, DIO_LOW);
 
-	//Configuring OC2
+	//Configuring Oc0
 	DIO_enu_SetPinDiretion(DIO_PIN_GROUP_D, DIO_PIN_7, DIO_PIN_WRITE);
 	DIO_enu_SetPinValue(DIO_PIN_GROUP_D, DIO_PIN_7, DIO_LOW);
 
-	DIO_enu_SetPinDiretion(DIO_PIN_GROUP_B, DIO_PIN_5, DIO_PIN_WRITE);
-	DIO_enu_SetPinValue(DIO_PIN_GROUP_B, DIO_PIN_5, DIO_LOW);
+	Timer_enu_SetDutyCycleForPWM(TIMER_0, TIMER_PHASE_PWM, TIMER_PHASE_PWM_INVERTING, 0.5);
+	Timer_enu_SetDutyCycleForPWM(TIMER_2, TIMER_PHASE_PWM, TIMER_PHASE_PWM_INVERTING, 0.5);
 
-	DIO_enu_SetPinDiretion(DIO_PIN_GROUP_B, DIO_PIN_6, DIO_PIN_WRITE);
-	DIO_enu_SetPinValue(DIO_PIN_GROUP_B, DIO_PIN_6, DIO_LOW);
-	
-	
-	//Initializing Timer
-	u8 Error = Timer_enu_Initialization();
-	u8 Error2 = Timer_enu_SetDutyCycleForPWM(TIMER_0, TIMER_FAST_PWM, TIMER_FAST_PWM_NON_INVERTING,0.1);
-	u8 Error3 = Timer_enu_SetDutyCycleForPWM(TIMER_2, TIMER_PHASE_PWM, TIMER_PHASE_PWM_NON_INVERTING,0.1);
+	//Initializng timer0
+	Timer_enu_Initialization();
 
-
-	
 	while (1)
 	{
-		if(Error == ES_OK)
-		{
-			DIO_enu_SetPinValue(DIO_PIN_GROUP_B, DIO_PIN_5, DIO_HIGH);
-
-		}
-		if(Error2 == ES_OK)
-		{
-			DIO_enu_SetPinValue(DIO_PIN_GROUP_B, DIO_PIN_6, DIO_HIGH);
-
-		}
-		if(Error3 == ES_OK)
-		{
-			DIO_enu_SetPinValue(DIO_PIN_GROUP_B, DIO_PIN_4, DIO_HIGH);
-
-		}
+			/* code */
 	}
+	
+
 	
 }
 
