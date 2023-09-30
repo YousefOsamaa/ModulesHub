@@ -3,7 +3,6 @@
 #include "../MCAL/DIO/DIO_Interface.h"
 #include "../MCAL/EXTI/EXTI_Interface.h"
 #include "../HAL/LCD/LCD_Interface.h"
-#include <util/delay.h>
 #include "../HAL/SW/SW_Interface.h"
 
 
@@ -14,7 +13,6 @@ int main()
 {
 	//Configuring Oc0
 	DIO_enu_SetPinDiretion(DIO_PIN_GROUP_B, DIO_PIN_3, DIO_PIN_WRITE);
-	DIO_enu_SetPinValue(DIO_PIN_GROUP_B, DIO_PIN_3, DIO_LOW);
 
 	Timer_enu_SetDutyCycleForPWM(TIMER_0, TIMER_FAST_PWM, TIMER_FAST_PWM_INVERTING, 0.35);
 	

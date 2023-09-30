@@ -3,6 +3,7 @@
 
 
 #include "../../LIB/STD.h"
+#include "../../LIB/ErrorStates.h"
 
 //Timer/Counter 0 Control Register 
 #define TCCR0 *(volatile u8*)0x53
