@@ -385,21 +385,6 @@ extern ErrorState_t LCD_enu_WriteFloatNum(f32 Copy_f32_Num, u8 Copy_u8_Row,u8 Co
     enu_ConvertFloatToInteger(&Local_f32_DecimalDigits, LCD_FLOAT_PRECISION);
 
 
-
-    //Saving variable in a u32 for safety reasons 
-    // Local_u32_TempDecimalDigits = Local_f32_DecimalDigits;
-    
-    // //Counting decimal digits
-    // do
-    // {
-    //     Local_u8_DecimalDigitCount++;
-    //     Local_u32_TempDecimalDigits  /= 10;
-
-    // } while (Local_u32_TempDecimalDigits);
-    
-
-
-
     if(((Copy_u8_Row >= 1) && (Copy_u8_Row <= 2)) && ((Copy_u8_Column >= 1) && (Copy_u8_Column <= 16))  && (Copy_u8_Page <= LCD_NUMBER_OF_PAGES) && (Local_u8_DecimalDigitCount <= LCD_MAX_INTEGER_LENGTH))
     {
         //Choosing IR
