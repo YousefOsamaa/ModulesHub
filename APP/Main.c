@@ -6,25 +6,26 @@
 #include "../HAL/SW/SW_Interface.h"
 
 
-
+#include <stdio.h>
 
 
 int main()
 {
-	//Configuring Oc0
-	DIO_enu_SetPinDiretion(DIO_PIN_GROUP_B, DIO_PIN_3, DIO_PIN_WRITE);
+	// //Configuring Oc0
+	// DIO_enu_SetPinDiretion(DIO_PIN_GROUP_B, DIO_PIN_3, DIO_PIN_WRITE);
 
-	Timer_enu_SetDutyCycleForPWM(TIMER_0, TIMER_FAST_PWM, TIMER_FAST_PWM_INVERTING, 0.35);
+	// Timer_enu_SetDutyCycleForPWM(TIMER_0, TIMER_FAST_PWM, TIMER_FAST_PWM_INVERTING, 0.35);
 	
 
 	//Initializng timer0
-	Timer_enu_Initialization();
+//	Timer_enu_Initialization();
 
-	while (1)
-	{
 
-	}
-	
+	LCD_enu_Initialization();
+
+	f32 x = 45.21;
+
+	LCD_enu_WriteFloatNum(x, LCD_ROW_1, LCD_COLUMN_1, LCD_PAGE_1);
 
 	return 0;
 }

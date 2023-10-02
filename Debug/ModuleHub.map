@@ -176,7 +176,7 @@ LOAD c:/sdk_win_64/sdk_win_64/winavr/bin/../lib/gcc/avr/4.3.3/avr5\libgcc.a
 .rela.plt
  *(.rela.plt)
 
-.text           0x00000000     0x559c
+.text           0x00000000     0x567e
  *(.vectors)
  .vectors       0x00000000       0x54 c:/sdk_win_64/sdk_win_64/winavr/bin/../lib/gcc/avr/4.3.3/../../../../avr/lib/avr5/crtm32.o
                 0x00000000                __vectors
@@ -518,72 +518,74 @@ LOAD c:/sdk_win_64/sdk_win_64/winavr/bin/../lib/gcc/avr/4.3.3/avr5\libgcc.a
                 0x000040f6      0x1d4 ./HAL/LCD/LCD_Program.o
                 0x000040f6                LCD_enu_WriteIntegerNum
  .text.LCD_enu_WriteFloatNum
-                0x000042ca      0x380 ./HAL/LCD/LCD_Program.o
+                0x000042ca      0x2ce ./HAL/LCD/LCD_Program.o
                 0x000042ca                LCD_enu_WriteFloatNum
  .text.enu_PassByteAndLatch
-                0x0000464a      0x3ba ./HAL/LCD/LCD_Program.o
+                0x00004598      0x3ba ./HAL/LCD/LCD_Program.o
  .text.enu_AddCustomCharacter
-                0x00004a04      0x132 ./HAL/LCD/LCD_Program.o
+                0x00004952      0x132 ./HAL/LCD/LCD_Program.o
  .text.enu_ConvertDigitToASCII
-                0x00004b36       0x50 ./HAL/LCD/LCD_Program.o
+                0x00004a84       0x50 ./HAL/LCD/LCD_Program.o
  .text.enu_ReverseInteger
-                0x00004b86       0xfc ./HAL/LCD/LCD_Program.o
+                0x00004ad4       0xfc ./HAL/LCD/LCD_Program.o
+ .text.enu_ConvertFloatToInteger
+                0x00004bd0      0x176 ./HAL/LCD/LCD_Program.o
  .text.Keypad_enu_Initialization
-                0x00004c82       0xf6 ./HAL/KEYPAD/Keypad_Program.o
-                0x00004c82                Keypad_enu_Initialization
+                0x00004d46       0xf6 ./HAL/KEYPAD/Keypad_Program.o
+                0x00004d46                Keypad_enu_Initialization
  .text.Keypad_enu_GetButtonPressedValue
-                0x00004d78      0x30e ./HAL/KEYPAD/Keypad_Program.o
-                0x00004d78                Keypad_enu_GetButtonPressedValue
+                0x00004e3c      0x30e ./HAL/KEYPAD/Keypad_Program.o
+                0x00004e3c                Keypad_enu_GetButtonPressedValue
  .text.Hexadecoder_enu_Initialization
-                0x00005086       0x56 ./HAL/Hexadecoder/Hexadecoder_Program.o
-                0x00005086                Hexadecoder_enu_Initialization
+                0x0000514a       0x56 ./HAL/Hexadecoder/Hexadecoder_Program.o
+                0x0000514a                Hexadecoder_enu_Initialization
  .text.Hexadecoder_enu_DisplayNum
-                0x000050dc       0x76 ./HAL/Hexadecoder/Hexadecoder_Program.o
-                0x000050dc                Hexadecoder_enu_DisplayNum
+                0x000051a0       0x76 ./HAL/Hexadecoder/Hexadecoder_Program.o
+                0x000051a0                Hexadecoder_enu_DisplayNum
  .text.Hexadecoder_enu_EnableSSG
-                0x00005152       0x60 ./HAL/Hexadecoder/Hexadecoder_Program.o
-                0x00005152                Hexadecoder_enu_EnableSSG
+                0x00005216       0x60 ./HAL/Hexadecoder/Hexadecoder_Program.o
+                0x00005216                Hexadecoder_enu_EnableSSG
  .text.Hexadecoder_enu_DisableSSG
-                0x000051b2       0x60 ./HAL/Hexadecoder/Hexadecoder_Program.o
-                0x000051b2                Hexadecoder_enu_DisableSSG
+                0x00005276       0x60 ./HAL/Hexadecoder/Hexadecoder_Program.o
+                0x00005276                Hexadecoder_enu_DisableSSG
  .text.Hexadecoder_enu_StopDisplay
-                0x00005212       0x2c ./HAL/Hexadecoder/Hexadecoder_Program.o
-                0x00005212                Hexadecoder_enu_StopDisplay
+                0x000052d6       0x2c ./HAL/Hexadecoder/Hexadecoder_Program.o
+                0x000052d6                Hexadecoder_enu_StopDisplay
  .text.Buzzer_enu_Initialization
-                0x0000523e       0x8e ./HAL/Buzzer/Buzzer_Program.o
-                0x0000523e                Buzzer_enu_Initialization
+                0x00005302       0x8e ./HAL/Buzzer/Buzzer_Program.o
+                0x00005302                Buzzer_enu_Initialization
  .text.Buzzer_enu_TuronOnBuzzer
-                0x000052cc       0x5c ./HAL/Buzzer/Buzzer_Program.o
-                0x000052cc                Buzzer_enu_TuronOnBuzzer
+                0x00005390       0x5c ./HAL/Buzzer/Buzzer_Program.o
+                0x00005390                Buzzer_enu_TuronOnBuzzer
  .text.Buzzer_enu_TuronOffBuzzer
-                0x00005328       0x5c ./HAL/Buzzer/Buzzer_Program.o
-                0x00005328                Buzzer_enu_TuronOffBuzzer
+                0x000053ec       0x5c ./HAL/Buzzer/Buzzer_Program.o
+                0x000053ec                Buzzer_enu_TuronOffBuzzer
  .text.Buzzer_enu_TurnOnAllBuzzers
-                0x00005384       0x62 ./HAL/Buzzer/Buzzer_Program.o
-                0x00005384                Buzzer_enu_TurnOnAllBuzzers
+                0x00005448       0x62 ./HAL/Buzzer/Buzzer_Program.o
+                0x00005448                Buzzer_enu_TurnOnAllBuzzers
  .text.Buzzer_enu_TurnOffAllBuzzers
-                0x000053e6       0x5e ./HAL/Buzzer/Buzzer_Program.o
-                0x000053e6                Buzzer_enu_TurnOffAllBuzzers
- .text.main     0x00005444       0x2e ./APP/Main.o
-                0x00005444                main
- .text.libgcc   0x00005472       0x3e c:/sdk_win_64/sdk_win_64/winavr/bin/../lib/gcc/avr/4.3.3/avr5\libgcc.a(_mulsi3.o)
-                0x00005472                __mulsi3
- .text.libgcc   0x000054b0       0x44 c:/sdk_win_64/sdk_win_64/winavr/bin/../lib/gcc/avr/4.3.3/avr5\libgcc.a(_udivmodsi4.o)
-                0x000054b0                __udivmodsi4
- .text.libgcc   0x000054f4       0x36 c:/sdk_win_64/sdk_win_64/winavr/bin/../lib/gcc/avr/4.3.3/avr5\libgcc.a(_divmodsi4.o)
-                0x000054f4                __divmodsi4
- .text.libgcc   0x0000552a        0x0 c:/sdk_win_64/sdk_win_64/winavr/bin/../lib/gcc/avr/4.3.3/avr5\libgcc.a(_exit.o)
- .text.libgcc   0x0000552a        0x0 c:/sdk_win_64/sdk_win_64/winavr/bin/../lib/gcc/avr/4.3.3/avr5\libgcc.a(_copy_data.o)
- .text.libgcc   0x0000552a        0x0 c:/sdk_win_64/sdk_win_64/winavr/bin/../lib/gcc/avr/4.3.3/avr5\libgcc.a(_clear_bss.o)
- .text.libgcc   0x0000552a       0x38 c:/sdk_win_64/sdk_win_64/winavr/bin/../lib/gcc/avr/4.3.3/avr5\libgcc.a(_prologue.o)
-                0x0000552a                __prologue_saves__
- .text.libgcc   0x00005562       0x36 c:/sdk_win_64/sdk_win_64/winavr/bin/../lib/gcc/avr/4.3.3/avr5\libgcc.a(_epilogue.o)
-                0x00005562                __epilogue_restores__
-                0x00005598                . = ALIGN (0x2)
+                0x000054aa       0x5e ./HAL/Buzzer/Buzzer_Program.o
+                0x000054aa                Buzzer_enu_TurnOffAllBuzzers
+ .text.main     0x00005508       0x4c ./APP/Main.o
+                0x00005508                main
+ .text.libgcc   0x00005554       0x3e c:/sdk_win_64/sdk_win_64/winavr/bin/../lib/gcc/avr/4.3.3/avr5\libgcc.a(_mulsi3.o)
+                0x00005554                __mulsi3
+ .text.libgcc   0x00005592       0x44 c:/sdk_win_64/sdk_win_64/winavr/bin/../lib/gcc/avr/4.3.3/avr5\libgcc.a(_udivmodsi4.o)
+                0x00005592                __udivmodsi4
+ .text.libgcc   0x000055d6       0x36 c:/sdk_win_64/sdk_win_64/winavr/bin/../lib/gcc/avr/4.3.3/avr5\libgcc.a(_divmodsi4.o)
+                0x000055d6                __divmodsi4
+ .text.libgcc   0x0000560c        0x0 c:/sdk_win_64/sdk_win_64/winavr/bin/../lib/gcc/avr/4.3.3/avr5\libgcc.a(_exit.o)
+ .text.libgcc   0x0000560c        0x0 c:/sdk_win_64/sdk_win_64/winavr/bin/../lib/gcc/avr/4.3.3/avr5\libgcc.a(_copy_data.o)
+ .text.libgcc   0x0000560c        0x0 c:/sdk_win_64/sdk_win_64/winavr/bin/../lib/gcc/avr/4.3.3/avr5\libgcc.a(_clear_bss.o)
+ .text.libgcc   0x0000560c       0x38 c:/sdk_win_64/sdk_win_64/winavr/bin/../lib/gcc/avr/4.3.3/avr5\libgcc.a(_prologue.o)
+                0x0000560c                __prologue_saves__
+ .text.libgcc   0x00005644       0x36 c:/sdk_win_64/sdk_win_64/winavr/bin/../lib/gcc/avr/4.3.3/avr5\libgcc.a(_epilogue.o)
+                0x00005644                __epilogue_restores__
+                0x0000567a                . = ALIGN (0x2)
  *(.fini9)
- .fini9         0x00005598        0x0 c:/sdk_win_64/sdk_win_64/winavr/bin/../lib/gcc/avr/4.3.3/avr5\libgcc.a(_exit.o)
-                0x00005598                exit
-                0x00005598                _exit
+ .fini9         0x0000567a        0x0 c:/sdk_win_64/sdk_win_64/winavr/bin/../lib/gcc/avr/4.3.3/avr5\libgcc.a(_exit.o)
+                0x0000567a                exit
+                0x0000567a                _exit
  *(.fini9)
  *(.fini8)
  *(.fini8)
@@ -602,11 +604,11 @@ LOAD c:/sdk_win_64/sdk_win_64/winavr/bin/../lib/gcc/avr/4.3.3/avr5\libgcc.a
  *(.fini1)
  *(.fini1)
  *(.fini0)
- .fini0         0x00005598        0x4 c:/sdk_win_64/sdk_win_64/winavr/bin/../lib/gcc/avr/4.3.3/avr5\libgcc.a(_exit.o)
+ .fini0         0x0000567a        0x4 c:/sdk_win_64/sdk_win_64/winavr/bin/../lib/gcc/avr/4.3.3/avr5\libgcc.a(_exit.o)
  *(.fini0)
-                0x0000559c                _etext = .
+                0x0000567e                _etext = .
 
-.data           0x00800060      0x148 load address 0x0000559c
+.data           0x00800060      0x148 load address 0x0000567e
                 0x00800060                PROVIDE (__data_start, .)
  *(.data)
  .data          0x00800060        0x0 c:/sdk_win_64/sdk_win_64/winavr/bin/../lib/gcc/avr/4.3.3/../../../../avr/lib/avr5/crtm32.o
@@ -769,8 +771,8 @@ LOAD c:/sdk_win_64/sdk_win_64/winavr/bin/../lib/gcc/avr/4.3.3/avr5\libgcc.a
                 0x008001d6        0x2 ./MCAL/ADC/ADC_Program.o
  *(COMMON)
                 0x008001d8                PROVIDE (__bss_end, .)
-                0x0000559c                __data_load_start = LOADADDR (.data)
-                0x000056e4                __data_load_end = (__data_load_start + SIZEOF (.data))
+                0x0000567e                __data_load_start = LOADADDR (.data)
+                0x000057c6                __data_load_end = (__data_load_start + SIZEOF (.data))
 
 .noinit         0x008001d8        0x0
                 0x008001d8                PROVIDE (__noinit_start, .)
@@ -795,7 +797,7 @@ LOAD c:/sdk_win_64/sdk_win_64/winavr/bin/../lib/gcc/avr/4.3.3/avr5\libgcc.a
 .signature
  *(.signature*)
 
-.stab           0x00000000     0x7644
+.stab           0x00000000     0x77e8
  *(.stab)
  .stab          0x00000000      0x324 ./MCAL/Timer/Timer_Config.o
  .stab          0x00000324     0x1524 ./MCAL/Timer/Timer_Program.o
@@ -822,22 +824,22 @@ LOAD c:/sdk_win_64/sdk_win_64/winavr/bin/../lib/gcc/avr/4.3.3/avr5\libgcc.a
                                 0x234 (size before relaxing)
  .stab          0x0000450c      0x6a8 ./HAL/LED/LED_Program.o
                                 0x6cc (size before relaxing)
- .stab          0x00004bb4     0x1770 ./HAL/LCD/LCD_Program.o
-                               0x177c (size before relaxing)
- .stab          0x00006324      0x5ac ./HAL/KEYPAD/Keypad_Program.o
+ .stab          0x00004bb4     0x1848 ./HAL/LCD/LCD_Program.o
+                               0x1854 (size before relaxing)
+ .stab          0x000063fc      0x5ac ./HAL/KEYPAD/Keypad_Program.o
                                 0x744 (size before relaxing)
- .stab          0x000068d0      0x528 ./HAL/Hexadecoder/Hexadecoder_Program.o
+ .stab          0x000069a8      0x528 ./HAL/Hexadecoder/Hexadecoder_Program.o
                                 0x534 (size before relaxing)
- .stab          0x00006df8      0x210 ./HAL/Buzzer/Buzzer_Config.o
+ .stab          0x00006ed0      0x210 ./HAL/Buzzer/Buzzer_Config.o
                                 0x21c (size before relaxing)
- .stab          0x00007008      0x414 ./HAL/Buzzer/Buzzer_Program.o
+ .stab          0x000070e0      0x414 ./HAL/Buzzer/Buzzer_Program.o
                                 0x51c (size before relaxing)
- .stab          0x0000741c      0x228 ./APP/Main.o
-                                0x234 (size before relaxing)
+ .stab          0x000074f4      0x2f4 ./APP/Main.o
+                                0x480 (size before relaxing)
 
-.stabstr        0x00000000     0x2fe9
+.stabstr        0x00000000     0x3296
  *(.stabstr)
- .stabstr       0x00000000     0x2fe9 ./MCAL/Timer/Timer_Config.o
+ .stabstr       0x00000000     0x3296 ./MCAL/Timer/Timer_Config.o
 
 .stab.excl
  *(.stab.excl)

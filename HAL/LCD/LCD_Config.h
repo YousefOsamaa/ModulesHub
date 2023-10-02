@@ -79,7 +79,7 @@
 #define LCD_K_GROUP
 #define LCD_K_PIN
 
-
+#define LCD_FLOAT_PRECISION    3
 
 
 #endif 

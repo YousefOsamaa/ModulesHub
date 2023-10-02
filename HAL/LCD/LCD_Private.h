@@ -73,5 +73,7 @@ static ErrorState_t enu_ConvertDigitToASCII(u8 *Copy_pu8_Digit);
 
 static ErrorState_t enu_ReverseInteger(u32* Copy_u8_Num);
 
+static ErrorState_t enu_ConvertFloatToInteger(f32* Copy_f32_DecimalDigits, u8 Copy_u8_FloatPrecision);
+
 
 #endif 
