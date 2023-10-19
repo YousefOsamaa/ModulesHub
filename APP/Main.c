@@ -4,31 +4,141 @@
 #include "../MCAL/EXTI/EXTI_Interface.h"
 #include "../HAL/LCD/LCD_Interface.h"
 #include "../HAL/SW/SW_Interface.h"
-
-
+#include "../MCAL/Timers/Timers_Interface.h"
+#include "../TMU/TMU_Interface.h"
 #include <stdio.h>
+#include <util/delay.h>
+#include "../MCAL/USART/USART_Interface.h"
+// #include <util/delay.h>
 
+void SEND (void* Copy_pvid_Parameters)
+{
+	u8 Local_u8_Flag = *(u8*)(Copy_pvid_Parameters);
 
+	Local_u8_Flag = True;
+}
 int main()
 {
-	// //Configuring Oc0
-	// DIO_enu_SetPinDiretion(DIO_PIN_GROUP_B, DIO_PIN_3, DIO_PIN_WRITE);
+	u8 Local_au8_String [] = "H";
+	u8 Local_u8_Flag = False;
 
-	// Timer_enu_SetDutyCycleForPWM(TIMER_0, TIMER_FAST_PWM, TIMER_FAST_PWM_INVERTING, 0.35);
-	
+	//Initializng USART
+	USART_enu_Initialization();
 
-	//Initializng timer0
-//	Timer_enu_Initialization();
+	//Setting CallBack Function
+	u8 Flag = USART_enu_SetCallBack(SEND, &Local_u8_Flag);
 
+	DIO_enu_SetPinDiretion(0,0,1);
 
-	LCD_enu_Initialization();
+	if(Flag == ES_OUT_OF_RANGE)
+	{
+		DIO_enu_GetPinValue(0,0,1);
+	}
+	else
+	{
+		DIO_enu_SetPinValue(0,0,0);
+	}
 
-	f32 x = 45.21;
+	//USART_enu_SendData(0xFF);
 
-	LCD_enu_WriteFloatNum(x, LCD_ROW_1, LCD_COLUMN_1, LCD_PAGE_1);
+	while(1)
+	{
+		u8 i = 5;
+		if(Local_u8_Flag)
+		{
+			//USART_enu_SendString(Local_au8_String);
+			USART_enu_SendData(i);
+
+			Local_u8_Flag = False;
+
+			i++;
+		}
+	}
 
 	return 0;
 }
+
+
+// typedef struct
+// {
+// 	u16 Count;
+// 	u8 Flag;
+
+// }Count_t;
+
+// #define Count_d ((Count_t*)(Copy_pvid_Parameters))->Count
+// #define Flag_d ((Count_t*)(Copy_pvid_Parameters))->Flag
+
+// void tog (void* Copy_pvid_Parameters)
+// {
+// 	Count_t* Local_pstr_ParametersPointer =  (Count_t*)(Copy_pvid_Parameters);
+
+	
+// 	(Local_pstr_ParametersPointer->Count)++;
+
+// 	if(Local_pstr_ParametersPointer->Count == 4883)
+// 	{
+// 		Local_pstr_ParametersPointer->Flag = True;
+// 	}
+
+// 	// DIO_enu_TogglePinValue(DIO_PIN_GROUP_A,DIO_PIN_0);
+
+	
+	
+
+// }
+
+
+
+
+
+
+
+
+
+
+
+
+
+// int main()
+// {
+// 	Count_t Local_str_TimerCount = {48 , False};
+
+// 	DIO_enu_SetPinDiretion(DIO_PIN_GROUP_A, DIO_PIN_0, DIO_PIN_WRITE);
+// 	DIO_enu_SetPinValue(DIO_PIN_GROUP_A, DIO_PIN_0, DIO_LOW);
+
+// 	//Initializing OC0 pin
+// 	DIO_enu_SetPinDiretion(DIO_PIN_GROUP_B, DIO_PIN_3, DIO_PIN_WRITE);
+
+// 	//Initializing LED pin
+// 	DIO_enu_SetPinDiretion(DIO_PIN_GROUP_B, DIO_PIN_0, DIO_PIN_WRITE);
+// 	DIO_enu_SetPinValue(DIO_PIN_GROUP_B, DIO_PIN_0, DIO_LOW);
+
+
+// 	//Initializing Timer
+// 	Timer_enu_Initialization();
+
+// 	//Setting ISR
+// 	Timer_enu_SetCallBack(TIMER_0, TIMER_NORMAL, tog, &Local_str_TimerCount);
+
+// 	//Setting GIE
+// 	SREG_vid_EnableBitI();
+
+// 	while (1)
+// 	{
+// 		if(Local_str_TimerCount.Flag)
+// 		{
+// 			DIO_enu_TogglePinValue(DIO_PIN_GROUP_B, DIO_PIN_0);
+
+// 			Local_str_TimerCount.Count = 48;
+
+// 			Local_str_TimerCount.Flag = False;
+// 		}
+// 	}
+	
+
+// 	return 0;
+// }
 
 
 

@@ -4,6 +4,7 @@
 #include "Timer_Private.h"
 #include "Timer_Config.h"
 
+
 extern u8 Timer_u8_TimerCount;
 extern TIMER_t Timer_astr_TimerList[];
 
@@ -362,6 +363,53 @@ extern ErrorState_t Timer_enu_SetTimerMode (u8 Copy_u8_TimerNumber, u8 Copy_Time
     return Local_u8_ErrorFlag;
 }
 
+extern ErrorState_t Timer_enu_SetFOCx (u8 Copy_u8_TimerNumber)
+{
+    u8 Local_u8_ErrorFlag = ES_NOK;
+
+    switch (Copy_u8_TimerNumber)
+    {
+        case TIMER_0:
+        {
+            TCCR0 |= (1 << TCCR0_FOC0);
+
+            Local_u8_ErrorFlag = ES_OK;
+            break;
+        }
+
+        case TIMER_1:
+        {
+
+            Local_u8_ErrorFlag = ES_OK;
+            break;
+        }
+
+        case TIMER_2:
+        {
+
+            TCCR2 |= (1 << TCCR2_FOC2);
+
+            Local_u8_ErrorFlag = ES_OK;
+            break;
+        }
+        
+        default:
+        {
+            Local_u8_ErrorFlag = ES_OUT_OF_RANGE;
+            break;
+        }
+    }
+
+    return Local_u8_ErrorFlag;
+}
+
+extern ErrorState_t Timer_enu_TimeDelay(u8 Copy_u8_TimerNumber, u8 Copy_u8_TimeinSec)
+{
+    u8 Local_u8_ErrorFlag = ES_NOK;
+
+
+    return Local_u8_ErrorFlag;
+}
 extern ErrorState_t Timer_enu_SetCallBack (u8 Copy_u8_TimerNumber, u8 Copy_u8_TimerMode, void (*Copy_pfun_AppFunction)(void*), void* Copy_pvid_Parameters)
 {
     u8 Local_u8_ErrorFlag = ES_NOK;
@@ -443,42 +491,45 @@ extern ErrorState_t Timer_enu_SetCallBack (u8 Copy_u8_TimerNumber, u8 Copy_u8_Ti
 
 
 //ISR
-void __vector_4 (void)__attribute__((signal));
-void __vector_5 (void)__attribute__((signal));
-void __vector_10 (void)__attribute__((signal));
-void __vector_11 (void)__attribute__((signal));
+// void __vector_4 (void)__attribute__((signal));
+// void __vector_5 (void)__attribute__((signal));
+// void __vector_10 (void)__attribute__((signal));
+// void __vector_11 (void)__attribute__((signal));
+// void __vector_4 (void)__attribute__((signal));
+// void __vector_10 (void)__attribute__((signal));
+// void __vector_11 (void)__attribute__((signal));
 
-void __vector_4 (void)
-{
-    if(apfun_ISRpointers[TIMER_2_CTC_ISR])
-    {
-       apfun_ISRpointers[TIMER_2_CTC_ISR](apvid_ISRParameters[TIMER_2_CTC_ISR]);
-    }
-}
+// void __vector_4 (void)
+// {
+//     if(apfun_ISRpointers[TIMER_2_CTC_ISR])
+//     {
+//        apfun_ISRpointers[TIMER_2_CTC_ISR](apvid_ISRParameters[TIMER_2_CTC_ISR]);
+//     }
+// }
 
-void __vector_5 (void)
-{
-    if(apfun_ISRpointers[TIMER_2_CTC_ISR])
-    {
-       apfun_ISRpointers[TIMER_2_CTC_ISR](apvid_ISRParameters[TIMER_2_CTC_ISR]);
-    }
-}
+// void __vector_5 (void)
+// {
+//     if(apfun_ISRpointers[TIMER_2_CTC_ISR])
+//     {
+//        apfun_ISRpointers[TIMER_2_CTC_ISR](apvid_ISRParameters[TIMER_2_CTC_ISR]);
+//     }
+// }
 
-void __vector_10 (void)
-{
-    if(apfun_ISRpointers[TIMER_0_CTC_ISR])
-    {
-       apfun_ISRpointers[TIMER_0_CTC_ISR](apvid_ISRParameters[TIMER_0_CTC_ISR]);
-    }
-}
+// void __vector_10 (void)
+// {
+//     if(apfun_ISRpointers[TIMER_0_CTC_ISR])
+//     {
+//        apfun_ISRpointers[TIMER_0_CTC_ISR](apvid_ISRParameters[TIMER_0_CTC_ISR]);
+//     }
+// }
 
-void __vector_11 (void)
-{
-    if(apfun_ISRpointers[TIMER_0_OVERFLOW_ISR])
-    {
-        apfun_ISRpointers[TIMER_0_OVERFLOW_ISR](apvid_ISRParameters[TIMER_0_OVERFLOW_ISR]);
-    }
-}
+// void __vector_11 (void)
+// {
+//     if(apfun_ISRpointers[TIMER_0_OVERFLOW_ISR])
+//     {
+//         apfun_ISRpointers[TIMER_0_OVERFLOW_ISR](apvid_ISRParameters[TIMER_0_OVERFLOW_ISR]);
+//     }
+// }
 
 
 
@@ -878,7 +929,7 @@ static ErrorState_t enu_SetInterruptMode(u8 Copy_u8_TimerNumber, u8 Copy_u8_Time
         }
 
         default:
-        Local_u8_ErrorFlag - ES_OUT_OF_RANGE;
+        Local_u8_ErrorFlag = ES_OUT_OF_RANGE;
         break;
     }
 
@@ -968,6 +1019,7 @@ static ErrorState_t enu_SetOCxBehavior(u8 Copy_u8_TimerNumber, u8 Copy_u8_TimerM
         {
             
             break;
+
         }
         
         case TIMER_2:

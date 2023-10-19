@@ -31,6 +31,10 @@ HAL/SW \
 MCAL/ADC \
 MCAL/DIO \
 MCAL/EXTI \
+MCAL/PWM \
 MCAL/SREG \
 MCAL/Timer \
+MCAL/Timers \
+MCAL/USART \
+TMU \
 

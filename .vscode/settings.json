@@ -9,6 +9,9 @@
         "dio_interface.h": "c",
         "std.h": "c",
         "lcd_interface.h": "c",
-        "timer_config.h": "c"
+        "timer_config.h": "c",
+        "usart_private.h": "c",
+        "usart_interface.h": "c",
+        "timer_interface.h": "c"
     }
 }

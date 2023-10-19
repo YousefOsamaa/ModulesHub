@@ -93,6 +93,8 @@ extern ErrorState_t Timer_enu_SetTimerMode (u8 Copy_u8_TimerNumber, u8 Copy_Time
 
 extern ErrorState_t Timer_enu_TimeDelay(u8 Copy_u8_TimerNumber, u8 Copy_u8_TimeinSec);
 
+extern ErrorState_t Timer_enu_SetFOCx (u8 Copy_u8_TimerNumber);
+
 extern ErrorState_t Timer_enu_SetCallBack (u8 Copy_u8_TimerNumber, u8 Copy_u8_TimerMode, void (*Copy_pfun_AppFunction)(void*), void* Copy_pvid_Parameters);
 
 
