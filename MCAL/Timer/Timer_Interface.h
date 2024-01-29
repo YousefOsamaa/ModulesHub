@@ -97,6 +97,14 @@ extern ErrorState_t Timer_enu_SetFOCx (u8 Copy_u8_TimerNumber);
 
 extern ErrorState_t Timer_enu_SetCallBack (u8 Copy_u8_TimerNumber, u8 Copy_u8_TimerMode, void (*Copy_pfun_AppFunction)(void*), void* Copy_pvid_Parameters);
 
+extern ErrorState_t Timer_enu_GetPSUsed(u8 Copy_u8_TimerNumber, u16* Copy_pu16_PS);
 
+extern ErrorState_t Timer_enu_GetTovx (u8 Copy_u8_TimerNumber, u8* Copy_pu8_TovxFlag);
+
+extern ErrorState_t Timer_enu_SetTovx (u8 Copy_u8_TimerNumber);
+
+extern ErrorState_t Timer_enu_EnableInterruptMode (u8 Copy_u8_TimerNumber, u8 Copu_u8_TimerMode);
+
+extern ErrorState_t Timer_enu_DisableInterruptMode (u8 Copy_u8_TimerNumber, u8 Copu_u8_TimerMode);
 
 #endif

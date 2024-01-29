@@ -85,7 +85,7 @@ extern ErrorState_t Timer_enu_SetTCNTxValue(u8 Copy_u8_TimerNumber, u16 Copy_u16
     {
         case TIMER_0:
         {
-            TCNT0 = (u8)Copy_u16_Value;
+            TCNT0 = Copy_u16_Value;
 
             Local_u8_ErrorFlag = ES_OK;
             break;
@@ -410,6 +410,7 @@ extern ErrorState_t Timer_enu_TimeDelay(u8 Copy_u8_TimerNumber, u8 Copy_u8_Timei
 
     return Local_u8_ErrorFlag;
 }
+
 extern ErrorState_t Timer_enu_SetCallBack (u8 Copy_u8_TimerNumber, u8 Copy_u8_TimerMode, void (*Copy_pfun_AppFunction)(void*), void* Copy_pvid_Parameters)
 {
     u8 Local_u8_ErrorFlag = ES_NOK;
@@ -489,47 +490,188 @@ extern ErrorState_t Timer_enu_SetCallBack (u8 Copy_u8_TimerNumber, u8 Copy_u8_Ti
     return Local_u8_ErrorFlag;
 }
 
+extern ErrorState_t Timer_enu_GetPSUsed(u8 Copy_u8_TimerNumber, u16* Copy_pu16_PS)
+{
+    u8 Local_u8_ErrorFlag = ES_NOK;
+
+    switch (Copy_u8_TimerNumber)
+    {
+        case TIMER_0:
+        {
+            u8 Local_u8_CS_Bits = TCCR0 & 0x07; //Acquiring the least significant 3 bits CS2:0\
+
+            switch (Local_u8_CS_Bits)
+            {
+            
+                case 0:
+                {
+                    *Copy_pu16_PS = 0;
+                    
+                    break;
+                }
+
+                case 1:
+                {
+                    *Copy_pu16_PS = 1;
+
+                    break;
+                }
+
+                case 2:
+                {
+                    *Copy_pu16_PS = 8;
+                    
+                    break;
+                }
+
+                case 3:
+                {
+                    *Copy_pu16_PS = 64;
+                    
+                    break;
+                }
+
+                case 4:
+                {
+                    *Copy_pu16_PS = 256;
+                    
+                    break;
+                }
+
+                case 5:
+                {
+                    *Copy_pu16_PS = 1024;
+                    
+                    break;
+                }
+
+                default:
+                {
+                    Local_u8_ErrorFlag = ES_OUT_OF_RANGE;
+                    break;
+                }
+            }  
+            break;
+        }
+
+        case TIMER_1:
+        {
+            break;
+        }
+
+        case TIMER_2:
+        {
+            break;
+        }
+        default:
+        {
+            Local_u8_ErrorFlag = ES_OUT_OF_RANGE;
+            break;
+        }
+    }
+
+    return Local_u8_ErrorFlag;
+}
+
+extern ErrorState_t Timer_enu_GetTovx (u8 Copy_u8_TimerNumber, u8* Copy_pu8_TovxFlag)
+{
+    u8 Local_u8_ErrorFlag = ES_NOK;
+
+    switch (Copy_u8_TimerNumber)
+    {
+    
+        case TIMER_0:
+        {
+            *Copy_pu8_TovxFlag = (TIFR >> TIFR_TOV0) & 1; //Getting Tov0 Flag
+
+            break;
+        }
+
+        default:
+        {
+            Local_u8_ErrorFlag = ES_OUT_OF_RANGE;
+            break;
+        }
+        
+    }
+    return Local_u8_ErrorFlag;
+}
+
+extern ErrorState_t Timer_enu_SetTovx (u8 Copy_u8_TimerNumber)
+{
+    u8 Local_u8_ErrorFlag = ES_NOK;
+
+    switch (Copy_u8_TimerNumber)
+    {
+        case TIMER_0:
+        {
+            TIFR |= ( 1 << TIFR_TOV0);
+            break;
+        }
+
+        default:
+        {
+            Local_u8_ErrorFlag = ES_OUT_OF_RANGE;
+
+            break;
+        }
+    }
+
+    return Local_u8_ErrorFlag;
+}
+
+extern ErrorState_t Timer_enu_EnableInterruptMode (u8 Copy_u8_TimerNumber, u8 Copu_u8_TimerMode)
+{
+    u8 Local_u8_ErrorFlag = enu_SetInterruptMode(Copy_u8_TimerNumber, Copu_u8_TimerMode, TIMER_INT_MODE);
+
+    return Local_u8_ErrorFlag;
+}
+
+extern ErrorState_t Timer_enu_DisableInterruptMode (u8 Copy_u8_TimerNumber, u8 Copu_u8_TimerMode)
+{
+    u8 Local_u8_ErrorFlag = enu_SetInterruptMode(Copy_u8_TimerNumber, Copu_u8_TimerMode, TIMER_POLLING_MODE);
+
+    return Local_u8_ErrorFlag;
+}
 
 //ISR
 // void __vector_4 (void)__attribute__((signal));
 // void __vector_5 (void)__attribute__((signal));
 // void __vector_10 (void)__attribute__((signal));
-// void __vector_11 (void)__attribute__((signal));
-// void __vector_4 (void)__attribute__((signal));
-// void __vector_10 (void)__attribute__((signal));
-// void __vector_11 (void)__attribute__((signal));
+void __vector_11 (void)__attribute__((signal));
 
-// void __vector_4 (void)
-// {
-//     if(apfun_ISRpointers[TIMER_2_CTC_ISR])
-//     {
-//        apfun_ISRpointers[TIMER_2_CTC_ISR](apvid_ISRParameters[TIMER_2_CTC_ISR]);
-//     }
-// }
 
-// void __vector_5 (void)
-// {
-//     if(apfun_ISRpointers[TIMER_2_CTC_ISR])
-//     {
-//        apfun_ISRpointers[TIMER_2_CTC_ISR](apvid_ISRParameters[TIMER_2_CTC_ISR]);
-//     }
-// }
+void __vector_4 (void)
+{
+    if(apfun_ISRpointers[TIMER_2_CTC_ISR])
+    {
+       apfun_ISRpointers[TIMER_2_CTC_ISR](apvid_ISRParameters[TIMER_2_CTC_ISR]);
+    }
+}
 
-// void __vector_10 (void)
-// {
-//     if(apfun_ISRpointers[TIMER_0_CTC_ISR])
-//     {
-//        apfun_ISRpointers[TIMER_0_CTC_ISR](apvid_ISRParameters[TIMER_0_CTC_ISR]);
-//     }
-// }
+void __vector_5 (void)
+{
+    if(apfun_ISRpointers[TIMER_2_CTC_ISR])
+    {
+       apfun_ISRpointers[TIMER_2_CTC_ISR](apvid_ISRParameters[TIMER_2_CTC_ISR]);
+    }
+}
 
-// void __vector_11 (void)
-// {
-//     if(apfun_ISRpointers[TIMER_0_OVERFLOW_ISR])
-//     {
-//         apfun_ISRpointers[TIMER_0_OVERFLOW_ISR](apvid_ISRParameters[TIMER_0_OVERFLOW_ISR]);
-//     }
-// }
+void __vector_10 (void)
+{
+    if(apfun_ISRpointers[TIMER_0_CTC_ISR])
+    {
+       apfun_ISRpointers[TIMER_0_CTC_ISR](apvid_ISRParameters[TIMER_0_CTC_ISR]);
+    }
+}
+
+void __vector_11 (void)
+{
+    if(apfun_ISRpointers[TIMER_0_OVERFLOW_ISR])
+    {
+        apfun_ISRpointers[TIMER_0_OVERFLOW_ISR](apvid_ISRParameters[TIMER_0_OVERFLOW_ISR]);
+    }
+}
 
 
 

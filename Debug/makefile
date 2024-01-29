@@ -22,6 +22,7 @@ RM := rm -rf
 -include HAL/LED/subdir.mk
 -include HAL/LCD/subdir.mk
 -include HAL/KEYPAD/subdir.mk
+-include HAL/ICU/subdir.mk
 -include HAL/Hexadecoder/subdir.mk
 -include HAL/Buzzer/subdir.mk
 -include APP/subdir.mk

@@ -23,6 +23,7 @@ SUBDIRS := \
 APP \
 HAL/Buzzer \
 HAL/Hexadecoder \
+HAL/ICU \
 HAL/KEYPAD \
 HAL/LCD \
 HAL/LED \

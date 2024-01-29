@@ -242,7 +242,6 @@ extern ErrorState_t LCD_enu_DrawSpecialCharacter(u8* Copy_au8_CharacterCode,u8 C
             //Placing Cursor in the intended Position
             enu_PassByteAndLatch( LCD_FIRST_LINE_BASE_ADDRESS + (Copy_u8_Column - 1) + (LCD_SECOND_LINE_BASE_ADDRESS - LCD_FIRST_LINE_BASE_ADDRESS)*(Copy_u8_Row - 1) + 16*(Copy_u8_Page - 1));
 
-
             //Choosing DR
             DIO_enu_SetPinValue(LCD_RS_GROUP, LCD_RS_PIN, DIO_HIGH);
             
