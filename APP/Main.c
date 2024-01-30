@@ -4,59 +4,119 @@
 #include "../MCAL/EXTI/EXTI_Interface.h"
 #include "../HAL/LCD/LCD_Interface.h"
 #include "../HAL/SW/SW_Interface.h"
-#include "../MCAL/Timers/Timers_Interface.h"
 #include "../TMU/TMU_Interface.h"
 #include <stdio.h>
 #include <util/delay.h>
 #include "../MCAL/USART/USART_Interface.h"
 #include "../HAL/ICU/ICU_Interface.h"
 #include <util/delay.h>
+#include "../MCAL/Timer1/Timer1_Interface.h"
+#define F_CPU 16000000UL
 
-
+void testing(void* pa)
+{
+	DIO_enu_TogglePinValue(DIO_PIN_GROUP_C, DIO_PIN_1);
+}
 
 void main()
 {
-	
+	//Variables	
 	f32 Local_af32_SignalsParameters[2] = {0}; //An array to place signal parameters in [0] Period and [1] Duty
 	f32 Local_f32_FrequencyHz;
 	f32 Local_f32_DutyPercentage;
 	u8 Local_u8_SystemState = 0xff;
 
-	LCD_enu_Initialization();//Initializing LCD
 
-	ICU_enu_Initialization();//Initialzing ICU
+
+	//Initializations
+	LCD_enu_Initialization();
 	
 	DIO_enu_SetPinDiretion(DIO_PIN_GROUP_C, DIO_PIN_1, DIO_PIN_WRITE);
 
-	// Printing the display screen
-	// LCD_enu_GoToPosition(LCD_ROW_1,LCD_COLUMN_1,LCD_PAGE_1);
-	// LCD_enu_SendString("Freq: ");
-	// LCD_enu_GoToPosition(LCD_ROW_1,LCD_COLUMN_15,LCD_PAGE_1);
-	// LCD_enu_SendString("Hz");
+	ICU_enu_Initialization();
 
-	// LCD_enu_GoToPosition(LCD_ROW_2,LCD_COLUMN_1,LCD_PAGE_1);
-	// LCD_enu_SendString("Duty: ");
-	// LCD_enu_GoToPosition(LCD_ROW_2,LCD_COLUMN_15,LCD_PAGE_1);
-	// LCD_enu_SendString("%");
 
-	//Enabling GIE
+ 	// Printing the display screen
+	LCD_enu_GoToPosition(LCD_ROW_1,LCD_COLUMN_1,LCD_PAGE_1);
+	LCD_enu_SendString("Freq: ");
+	LCD_enu_GoToPosition(LCD_ROW_1,LCD_COLUMN_15,LCD_PAGE_1);
+	LCD_enu_SendString("Hz");
+
+	LCD_enu_GoToPosition(LCD_ROW_2,LCD_COLUMN_1,LCD_PAGE_1);
+	LCD_enu_SendString("Duty: ");
+	LCD_enu_GoToPosition(LCD_ROW_2,LCD_COLUMN_15,LCD_PAGE_1);
+	LCD_enu_SendString("%");
+
+
+
+	// Enabling GIE
 	SREG_vid_EnableBitI();
 
 	
-	
+
+
+
 	ICU_enu_StartCapture();
+	//Superloop
 	while(1)
 	{
+
+		ICU_enu_CalculateParameters(Local_af32_SignalsParameters); //Calculating Parameters
 		
-		// ICU_enu_CalculateParameters(Local_af32_SignalsParameters); //Calculating Parameters
+		Local_f32_FrequencyHz = Local_af32_SignalsParameters[0];
+		Local_f32_DutyPercentage = Local_af32_SignalsParameters[1];
 		
-		// Local_f32_FrequencyHz = Local_af32_SignalsParameters[0];
-		// Local_f32_DutyPercentage = Local_af32_SignalsParameters[1];
-		
-		// LCD_enu_WriteFloatNum(Local_af32_SignalsParameters[0], LCD_ROW_1, LCD_COLUMN_8, LCD_PAGE_1);
-		// LCD_enu_WriteFloatNum(Local_f32_DutyPercentage,LCD_ROW_2,LCD_COLUMN_8,LCD_PAGE_1);	
+		LCD_enu_WriteFloatNum(Local_af32_SignalsParameters[0], LCD_ROW_1, LCD_COLUMN_8, LCD_PAGE_1);
+		LCD_enu_WriteFloatNum(Local_f32_DutyPercentage,LCD_ROW_2,LCD_COLUMN_8,LCD_PAGE_1);	
 	}
 }
+
+
+
+// void main()
+// {
+	
+// 	f32 Local_af32_SignalsParameters[2] = {0}; //An array to place signal parameters in [0] Period and [1] Duty
+// 	f32 Local_f32_FrequencyHz;
+// 	f32 Local_f32_DutyPercentage;
+// 	u8 Local_u8_SystemState = 0xff;
+
+// 	LCD_enu_Initialization();//Initializing LCD
+	
+
+// 	//ICU_enu_Initialization();//Initialzing ICU
+	
+
+// 	// Printing the display screen
+// 	// LCD_enu_GoToPosition(LCD_ROW_1,LCD_COLUMN_1,LCD_PAGE_1);
+// 	// LCD_enu_SendString("Freq: ");
+// 	// LCD_enu_GoToPosition(LCD_ROW_1,LCD_COLUMN_15,LCD_PAGE_1);
+// 	// LCD_enu_SendString("Hz");
+
+// 	// LCD_enu_GoToPosition(LCD_ROW_2,LCD_COLUMN_1,LCD_PAGE_1);
+// 	// LCD_enu_SendString("Duty: ");
+// 	// LCD_enu_GoToPosition(LCD_ROW_2,LCD_COLUMN_15,LCD_PAGE_1);
+// 	// LCD_enu_SendString("%");
+
+// 	//Enabling GIE
+// 	SREG_vid_EnableBitI();
+
+	
+// 	u16 Local_u16_Test = 0;
+
+// 	//ICU_enu_StartCapture();
+// 	while(1)
+// 	{
+		
+// 		// ICU_enu_CalculateParameters(Local_af32_SignalsParameters); //Calculating Parameters
+		
+// 		// Local_f32_FrequencyHz = Local_af32_SignalsParameters[0];
+// 		// Local_f32_DutyPercentage = Local_af32_SignalsParameters[1];
+		
+// 		// LCD_enu_WriteFloatNum(Local_af32_SignalsParameters[0], LCD_ROW_1, LCD_COLUMN_8, LCD_PAGE_1);
+// 		// LCD_enu_WriteFloatNum(Local_f32_DutyPercentage,LCD_ROW_2,LCD_COLUMN_8,LCD_PAGE_1);	
+// 	}
+// }
 
 
 

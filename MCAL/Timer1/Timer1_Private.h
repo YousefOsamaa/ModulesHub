@@ -54,14 +54,14 @@ typedef enum
 typedef enum
 {
 
- TCNT1H_B0,    //Timer/Counter 1 register Bit 0  
- TCNT1H_B1,    //Timer/Counter 1 register Bit 1 
- TCNT1H_B2,    //Timer/Counter 1 register Bit 2  
- TCNT1H_B3,    //Timer/Counter 1 register Bit 3  
- TCNT1H_B4,    //Timer/Counter 1 register Bit 4  
- TCNT1H_B5,    //Timer/Counter 1 register Bit 5  
- TCNT1H_B6,    //Timer/Counter 1 register Bit 6  
- TCNT1H_B7     //Timer/Counter 1 register Bit 7      
+ TCNT1L_B0,    //Timer/Counter 1 register Bit 0  
+ TCNT1L_B1,    //Timer/Counter 1 register Bit 1 
+ TCNT1L_B2,    //Timer/Counter 1 register Bit 2  
+ TCNT1L_B3,    //Timer/Counter 1 register Bit 3  
+ TCNT1L_B4,    //Timer/Counter 1 register Bit 4  
+ TCNT1L_B5,    //Timer/Counter 1 register Bit 5  
+ TCNT1L_B6,    //Timer/Counter 1 register Bit 6  
+ TCNT1L_B7     //Timer/Counter 1 register Bit 7      
 
 }TCNT1L_t;
 
@@ -176,10 +176,10 @@ typedef enum
 typedef enum
 {
 
- TIFR_TOIE1   =   2 , //Timer/Counter 1 Overflow Flag 
- TIFR_OCIE1B  =   3 , //Output Compare Flag B FOR Timer/Counter 1
- TIFR_OCIE1A  =   4 , //Output Compare Flag A FOR Timer/Counter 1
- TIFR_TICIE1  =   5 , //Input Capture Interrupt Enable
+ TIFR_TOV1   =   2 , //Timer/Counter 1 Overflow Flag 
+ TIFR_OCF1B  =   3 , //Output Compare Flag B FOR Timer/Counter 1
+ TIFR_OCF1A  =   4 , //Output Compare Flag A FOR Timer/Counter 1
+ TIFR_ICF1  =   5 , //Input Capture Interrupt Enable
 
 }TIFR_t;
 
@@ -192,8 +192,8 @@ typedef enum
 #define TIMER1_PS_64             3
 #define TIMER1_PS_256            4
 #define TIMER1_PS_1024           5
-#define TIMER1_FALLING_EGDE      6   
-#define TIMER1_RISING_EGDE       7   
+#define TIMER1_PS_FALLING_EGDE      6   
+#define TIMER1_PS_RISING_EGDE       7   
 
 
 //Timer Modes
@@ -205,12 +205,25 @@ typedef enum
 #define TIMER1_ACTIVATE_INT_MODE                         1
 #define TIMER1_ACTIVATE_POLLING_MODE                     0
 
-//Input Capture Mode 
+//Input Capture Edge Mode 
 #define TIMER1_ICU_RISING_EDGE                       1
 #define TIMER1_ICU_FALLING_EDGE                      0
 
 //Input Capture Interrupt Mode 
 #define TIMER1_ACTIVATE_ICU_INTERRUPT                       1
 #define TIMER1_DEACTIVATE_ICU_INTERRUPT                     0
+
+//ISRs Count
+#define TIMER1_ISR_COUNT   4
+
+//ISR Pointers Location
+#define TIMER1_CAPTURE_EVENT_ISR       0
+#define TIMER1_CTC_A_ISR               1
+#define TIMER1_CTC_B_ISR               2
+#define TIMER1_OVERFLOW_ISR            3
+
+//Noise Canceler
+#define TIMER1_ACTIVATE_NC             1
+#define TIMER1_DEACTIVATE_NC           0
 
 #endif

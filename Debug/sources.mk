@@ -35,7 +35,7 @@ MCAL/EXTI \
 MCAL/PWM \
 MCAL/SREG \
 MCAL/Timer \
-MCAL/Timers \
+MCAL/Timer1 \
 MCAL/USART \
 TMU \
 

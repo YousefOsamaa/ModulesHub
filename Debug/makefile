@@ -10,7 +10,7 @@ RM := rm -rf
 -include sources.mk
 -include TMU/subdir.mk
 -include MCAL/USART/subdir.mk
--include MCAL/Timers/subdir.mk
+-include MCAL/Timer1/subdir.mk
 -include MCAL/Timer/subdir.mk
 -include MCAL/SREG/subdir.mk
 -include MCAL/PWM/subdir.mk

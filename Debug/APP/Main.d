@@ -11,14 +11,16 @@ APP/Main.o APP/Main.o: ../APP/Main.c \
   ../APP/../HAL/LCD/LCD_Interface.h ../APP/../HAL/LCD/../../LIB/STD.h \
   ../APP/../HAL/LCD/../../LIB/ErrorStates.h \
   ../APP/../HAL/SW/SW_Interface.h ../APP/../HAL/SW/../../LIB/STD.h \
-  ../APP/../HAL/SW/../../LIB/ErrorStates.h \
-  ../APP/../MCAL/Timers/Timers_Interface.h ../APP/../TMU/TMU_Interface.h \
+  ../APP/../HAL/SW/../../LIB/ErrorStates.h ../APP/../TMU/TMU_Interface.h \
   ../APP/../MCAL/USART/USART_Interface.h \
   ../APP/../MCAL/USART/../../LIB/STD.h \
   ../APP/../MCAL/USART/../../LIB/ErrorStates.h \
   ../APP/../HAL/ICU/ICU_Interface.h \
   ../APP/../HAL/ICU/../../LIB/ErrorStates.h \
-  ../APP/../HAL/ICU/../../LIB/STD.h
+  ../APP/../HAL/ICU/../../LIB/STD.h \
+  ../APP/../MCAL/Timer1/Timer1_Interface.h \
+  ../APP/../MCAL/Timer1/../../LIB/ErrorStates.h \
+  ../APP/../MCAL/Timer1/../../LIB/STD.h
 
 ../APP/../MCAL/Timer/Timer_Interface.h:
 
@@ -52,8 +54,6 @@ APP/Main.o APP/Main.o: ../APP/Main.c \
 
 ../APP/../HAL/SW/../../LIB/ErrorStates.h:
 
-../APP/../MCAL/Timers/Timers_Interface.h:
-
 ../APP/../TMU/TMU_Interface.h:
 
 ../APP/../MCAL/USART/USART_Interface.h:
@@ -67,3 +67,9 @@ APP/Main.o APP/Main.o: ../APP/Main.c \
 ../APP/../HAL/ICU/../../LIB/ErrorStates.h:
 
 ../APP/../HAL/ICU/../../LIB/STD.h:
+
+../APP/../MCAL/Timer1/Timer1_Interface.h:
+
+../APP/../MCAL/Timer1/../../LIB/ErrorStates.h:
+
+../APP/../MCAL/Timer1/../../LIB/STD.h:

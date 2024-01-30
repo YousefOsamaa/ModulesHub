@@ -7,6 +7,7 @@
 #include "../../MCAL/Timer/Timer_Interface.h"
 #include "../../MCAL/DIO/DIO_Interface.h"
 #include "../LCD/LCD_Interface.h"
+#include "../../MCAL/Timer1/Timer1_Interface.h"
 
 //ICU Module local files
 #include "ICU_Config.h"
@@ -23,21 +24,28 @@ extern ErrorState_t ICU_enu_Initialization()
 {
     u8 Local_u8_ErrorFlag = ES_NOK;
 
-    //Initialize Timer peripheral: Timer0, Normal, PS 1024, and  Interrupt Mode
-    Timer_enu_Initialization();
-    Timer_enu_DisableInterruptMode(ICU_TIMER_USED, TIMER_NORMAL); //Disabling Timer Interrupt
-    Timer_enu_SetCallBack(ICU_TIMER_USED, TIMER_NORMAL, vid_IncrementOverFlowCounter, NULL);//Setting Call Back Function
-    
+    //Initialize Timer peripheral: Timer1, Normal, PS 1024, and  Interrupt Mode for overflow and input capture
+    Timer1_enu_Initialization();
+    Timer1_enu_DisableInterrupt(TIMER1_CAPTURE_EVENT_ISR);
+    Timer1_enu_SetCallBackFunction(TIMER1_CAPTURE_EVENT_ISR, vid_CapturingFunction, NULL);
+    Timer1_enu_SetCallBackFunction(TIMER1_OVERFLOW_ISR, vid_IncrementOverFlowCounter, NULL);
+    Timer1_enu_DisableInterrupt(TIMER1_OVERFLOW_ISR);
+
+
+    //Initialize ICU module
+    LOC_u8_State = ICU_IDLE; //State machine must start as IDLE until activation
+
+
     //Initialize EXTI peripheral: EXTI0, INT Mode, Rising Edge
-    EXTI_enu_Initialization();
-    EXTI_enu_INTMode(ICU_EXTI_USED, EXTI_POLLING_MODE); //Preventing EXTI from causing an interrupt until ICU activation
-    EXTI_enu_SetCallBack(ICU_EXTI_USED, vid_CapturingFunction, NULL); //Setting CapturingFunction as the EXTI ISR
-
-    //Initialize ICU module 
-    LOC_u8_State = ICU_IDLE; //State machine must start as IDLE until activation 
-
+    // EXTI_enu_Initialization();
+    // EXTI_enu_INTMode(ICU_EXTI_USED, EXTI_POLLING_MODE); //Preventing EXTI from causing an interrupt until ICU activation
+    // EXTI_enu_SetCallBack(ICU_EXTI_USED, vid_CapturingFunction, NULL); //Setting CapturingFunction as the EXTI ISR
+    // Timer_enu_Initialization();
+    // Timer_enu_DisableInterruptMode(ICU_TIMER_USED, TIMER_NORMAL); //Disabling Timer Interrupt
+    // Timer_enu_SetCallBack(ICU_TIMER_USED, TIMER_NORMAL, vid_IncrementOverFlowCounter, NULL);//Setting Call Back Function
 
     return Local_u8_ErrorFlag;
+
 }
 
 extern ErrorState_t ICU_enu_StartCapture()
@@ -49,11 +57,17 @@ extern ErrorState_t ICU_enu_StartCapture()
         
         LOC_u8_State = ICU_FIRST_RISING_EDGE; //State machine will begin from the 'FIRS_RISING_EGDE' State
         
-        Timer_enu_GetPSUsed(ICU_TIMER_USED, &LOC_u16_Timer_PS); //Acquiring Timer PS
+        Timer1_enu_GetPS(&LOC_u16_Timer_PS);
+        
+        Timer1_enu_SetInputCaptureEdge(TIMER1_ICU_RISING_EDGE);
 
-        Timer_enu_EnableInterruptMode(ICU_TIMER_USED, TIMER_NORMAL); //Enabling Timer Interrupt 
+        Timer1_enu_ClearFlag(TIMER1_CAPTURE_EVENT_ISR); //Clearing Flag incase of pending interrupts
+        
+        Timer1_enu_ClearFlag(TIMER1_OVERFLOW_ISR); //Clearing Flag incase of pending interrupts
 
-        EXTI_enu_INTMode(ICU_EXTI_USED, EXTI_INT_MODE); //EXTI INT mode activated
+        Timer1_enu_EnableInterrupt(TIMER1_CAPTURE_EVENT_ISR);
+    
+        Timer1_enu_EnableInterrupt(TIMER1_OVERFLOW_ISR);
     }
 
     return Local_u8_ErrorFlag;
@@ -67,9 +81,9 @@ extern ErrorState_t ICU_enu_CalculateParameters(f32* Copy_pf32_SignalParametersA
     if(LOC_u8_State == ICU_IDLE)
     {
 
-        LOC_u32_PeriodCounts += 256UL*LOC_au32_NumberOfOverflowsArray[2]; //Total Number of Period Counts
+        LOC_u32_PeriodCounts += 65536ULL*LOC_au32_NumberOfOverflowsArray[2]; //Total Number of Period Counts
 
-        LOC_u32_TonCounts += 256UL*LOC_au32_NumberOfOverflowsArray[1]; //Total Number of Duty Counts
+        LOC_u32_TonCounts += 65536ULL*LOC_au32_NumberOfOverflowsArray[1]; //Total Number of Duty Counts
 
         //Calculating Frequency in Hz
         if(LOC_u32_PeriodCounts != 0)
@@ -78,17 +92,17 @@ extern ErrorState_t ICU_enu_CalculateParameters(f32* Copy_pf32_SignalParametersA
         }
         else
         {
-            Copy_pf32_SignalParametersArray[0] = 0; //No signal
+            Copy_pf32_SignalParametersArray[0] = 0; //dc
         }
 
-        if(LOC_u32_TonCounts != 0)
+        if(LOC_u32_PeriodCounts != 0)
         {
             //Calculating Duty Ratio in %
             Copy_pf32_SignalParametersArray[1] = ((f32)LOC_u32_TonCounts*100UL)/(LOC_u32_PeriodCounts);
         }   
         else
         {
-            Copy_pf32_SignalParametersArray[1] = 0; //No signal
+            Copy_pf32_SignalParametersArray[1] = 100; 
         }
     
     }
@@ -112,6 +126,7 @@ extern ErrorState_t ICU_enu_GetState(u8* Copy_pu8_SystemState)
     return Local_u8_ErrorFlag;
 }
 
+u16 TestVariable;
 void vid_CapturingFunction(void* Copy_pvid_FunctionParameters)
 {
 
@@ -122,90 +137,56 @@ void vid_CapturingFunction(void* Copy_pvid_FunctionParameters)
         case ICU_FIRST_RISING_EDGE:
         {
             
-            Timer_enu_SetTCNTxValue(ICU_TIMER_USED, 0); //Resetig timer value
-
-            Timer_enu_SetTovx(ICU_TIMER_USED); //Clearing Tov0 Flag
-
-            EXTI_enu_ISC(ICU_EXTI_USED, EXTI_FALLING_EDGE); //Setting EXTI to Falling Edge
+            Timer1_enu_SetTCNT1(0);
 
             LOC_au32_NumberOfOverflowsArray[0] = 0; //Resetting Overflow Counter
 
+            Timer1_enu_SetInputCaptureEdge(TIMER1_ICU_FALLING_EDGE);            
+            
             LOC_u8_State = ICU_FALLING_EDGE;  //Setting state machine to Falling edge
             
-            // Timer_enu_GetPSUsed(ICU_TIMER_USED, &LOC_u16_Timer_PS); //Acquiring Timer PS
-            // LOC_au32_NumberOfOverflowsArray[1] = 0; //Resetting Overflow Counter
-            // LOC_au32_NumberOfOverflowsArray[2] = 0; //Resetting Overflow Counter
 
             break;
         }
 
         case ICU_FALLING_EDGE:
         {
-            Timer_enu_ReadTCNTxValue(ICU_TIMER_USED, &LOC_u32_TonCounts); //Saving Tcntx value in the Ton variable
-
-            LCD_enu_WriteIntegerNum(LOC_u32_TonCounts, LCD_ROW_1, LCD_COLUMN_1, LCD_PAGE_1);
-            LOC_au32_NumberOfOverflowsArray[1] = LOC_au32_NumberOfOverflowsArray[0];
-
-            LCD_enu_WriteIntegerNum(LOC_au32_NumberOfOverflowsArray[1], LCD_ROW_1, LCD_COLUMN_8, LCD_PAGE_1);
             
-            EXTI_enu_ISC(ICU_EXTI_USED, EXTI_RISING_EDGE); //Setting EXTI to Falling Edge
+            Timer1_enu_GetICR1(&LOC_u32_TonCounts);
+
+            LOC_au32_NumberOfOverflowsArray[1] = LOC_au32_NumberOfOverflowsArray[0];
+            
+            Timer1_enu_SetInputCaptureEdge(TIMER1_ICU_RISING_EDGE);
             
             LOC_u8_State = ICU_SECOND_RISING_EDGE; //Setting state machine to Falling edge
-
-            //u8 Local_u8_Tov0 = 0;
-            // Timer_enu_GetTovx(ICU_TIMER_USED, &Local_u8_Tov0);
-
-            // if(Local_u8_Tov0)
-            // {
-            //     Timer_enu_SetTovx(ICU_TIMER_USED); //Clearing Flag
-
-            //     LOC_au32_NumberOfOverflowsArray[1]++; //Recording Number Of Duty Overflows
-            // }
-           
-            //LCD_enu_WriteFloatNum(LOC_u32_TonCounts, LCD_ROW_1, LCD_COLUMN_1, LCD_PAGE_1);
             
-            //LCD_enu_WriteFloatNum(LOC_au32_NumberOfOverflowsArray[1], LCD_ROW_2, LCD_COLUMN_1, LCD_PAGE_1);
             
+
 
             break;
         }
         
         case ICU_SECOND_RISING_EDGE:
         {
-            Timer_enu_ReadTCNTxValue(ICU_TIMER_USED, &LOC_u32_PeriodCounts ); //Saving Tcntx value in the Ton variable
-                        
-            LCD_enu_WriteIntegerNum(LOC_u32_PeriodCounts, LCD_ROW_2, LCD_COLUMN_1, LCD_PAGE_1);
-
+            Timer1_enu_GetICR1(&LOC_u32_PeriodCounts);
+            
             LOC_au32_NumberOfOverflowsArray[2] = LOC_au32_NumberOfOverflowsArray[0];
-            
-            LCD_enu_WriteIntegerNum(LOC_au32_NumberOfOverflowsArray[2], LCD_ROW_2, LCD_COLUMN_8, LCD_PAGE_1);
-            
+
             #if ICU_MODE == ICU_SNGLE_CAPTURE_MODE
-            EXTI_enu_INTMode(ICU_EXTI_USED, EXTI_POLLING_MODE); //Turning off ICU intil activation
-            Timer_enu_DisableInterruptMode(ICU_TIMER_USED, TIMER_NORMAL);
+            Timer1_enu_DisableInterrupt(TIMER1_CAPTURE_EVENT_ISR);
+            Timer1_enu_DisableInterrupt(TIMER1_OVERFLOW_ISR);
             LOC_u8_State = ICU_IDLE;
-
             #else
-            EXTI_enu_INTMode(ICU_EXTI_USED, EXTI_RISING_EDGE); //Turning off ICU intil activation
-            LOC_u8_State = ICU_FIRST_RISING_EDGE;
-
             #endif
 
+            // LCD_enu_WriteIntegerNum(LOC_u32_TonCounts, LCD_ROW_1, LCD_COLUMN_1, LCD_PAGE_1);
+            
+            // LCD_enu_WriteIntegerNum(LOC_au32_NumberOfOverflowsArray[1], LCD_ROW_1, LCD_COLUMN_8, LCD_PAGE_1);
+            
+            // LCD_enu_WriteIntegerNum(LOC_u32_PeriodCounts, LCD_ROW_2, LCD_COLUMN_1, LCD_PAGE_1);
+            // LCD_enu_WriteIntegerNum(LOC_au32_NumberOfOverflowsArray[2], LCD_ROW_2, LCD_COLUMN_8, LCD_PAGE_1);
+            
             break;
-
-            // u8 Local_u8_Tov0 = 0;
-            // Timer_enu_GetTovx(ICU_TIMER_USED, &Local_u8_Tov0);
-
-            // if(Local_u8_Tov0)
-            // {
-            //     Timer_enu_SetTovx(ICU_TIMER_USED); //Clearing Flag
-
-            //     LOC_au32_NumberOfOverflowsArray[2]++; //Recording Number Of Duty Overflows
-            // }
-
-           // LCD_enu_WriteFloatNum(LOC_u32_PeriodCounts, LCD_ROW_1, LCD_COLUMN_1, LCD_PAGE_1);
-
-            //CD_enu_WriteFloatNum(LOC_au32_NumberOfOverflowsArray[2], LCD_ROW_2, LCD_COLUMN_1, LCD_PAGE_1);
 
         }
     
@@ -228,7 +209,5 @@ void vid_IncrementOverFlowCounter()
 {
 
     LOC_au32_NumberOfOverflowsArray[0]++;
-
-    DIO_enu_TogglePinValue(DIO_PIN_GROUP_C, DIO_PIN_1);
     
 }
