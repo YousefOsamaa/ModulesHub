@@ -12,6 +12,7 @@
         "timer_config.h": "c",
         "usart_private.h": "c",
         "usart_interface.h": "c",
-        "timer_interface.h": "c"
+        "timer_interface.h": "c",
+        "SPI_Program.C": "cpp"
     }
 }

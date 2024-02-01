@@ -1,22 +1,16 @@
 #include "../MCAL/Timer/Timer_Interface.h"
 #include "../MCAL/SREG/SREG_Interface.h"
 #include "../MCAL/DIO/DIO_Interface.h"
-#include "../MCAL/EXTI/EXTI_Interface.h"
 #include "../HAL/LCD/LCD_Interface.h"
-#include "../HAL/SW/SW_Interface.h"
-#include "../TMU/TMU_Interface.h"
-#include <stdio.h>
 #include <util/delay.h>
-#include "../MCAL/USART/USART_Interface.h"
-#include "../HAL/ICU/ICU_Interface.h"
-#include <util/delay.h>
-#include "../MCAL/Timer1/Timer1_Interface.h"
+
+
 #define F_CPU 16000000UL
 
-void testing(void* pa)
-{
-	DIO_enu_TogglePinValue(DIO_PIN_GROUP_C, DIO_PIN_1);
-}
+#define CODE (SLAVE)
+
+
+
 
 void main()
 {
